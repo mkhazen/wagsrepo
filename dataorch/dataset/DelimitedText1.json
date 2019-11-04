@@ -1,0 +1,52 @@
+{
+	"name": "DelimitedText1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "FileServer1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "FileServerLocation",
+				"fileName": "test.csv",
+				"folderPath": "wags"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "key",
+				"type": "String"
+			},
+			{
+				"name": "pickup_datetime",
+				"type": "String"
+			},
+			{
+				"name": "pickup_longitude",
+				"type": "String"
+			},
+			{
+				"name": "pickup_latitude",
+				"type": "String"
+			},
+			{
+				"name": "dropoff_longitude",
+				"type": "String"
+			},
+			{
+				"name": "dropoff_latitude",
+				"type": "String"
+			},
+			{
+				"name": "passenger_count",
+				"type": "String"
+			}
+		]
+	}
+}
