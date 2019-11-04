@@ -7,7 +7,7 @@
 		"typeProperties": {
 			"host": "C:\\Work\\wags",
 			"userId": "vmadmin",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI3ZmE3OTJhOS0zZDUwLTQ0M2QtYWQ4My00ODU0NWU0ZjdiNDYiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI3ZTA0NDhhMy05ZjAxLTQ1MDctYWIxNC1kMjc4OTUwYzMzODQiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
 			"referenceName": "mltest1",
