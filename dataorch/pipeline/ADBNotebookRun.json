@@ -53,12 +53,92 @@
 						}
 					},
 					"sink": {
-						"type": "BinarySink",
+						"type": "DelimitedTextSink",
 						"storeSettings": {
 							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
 						}
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "key",
+									"type": "String"
+								},
+								"sink": {
+									"name": "key",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "pickup_datetime",
+									"type": "String"
+								},
+								"sink": {
+									"name": "pickup_datetime",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "pickup_longitude",
+									"type": "String"
+								},
+								"sink": {
+									"name": "pickup_longitude",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "pickup_latitude",
+									"type": "String"
+								},
+								"sink": {
+									"name": "pickup_latitude",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "dropoff_longitude",
+									"type": "String"
+								},
+								"sink": {
+									"name": "dropoff_longitude",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "dropoff_latitude",
+									"type": "String"
+								},
+								"sink": {
+									"name": "dropoff_latitude",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "passenger_count",
+									"type": "String"
+								},
+								"sink": {
+									"name": "passenger_count",
+									"type": "String"
+								}
+							}
+						]
+					}
 				},
 				"inputs": [
 					{
@@ -68,7 +148,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Binary1",
+						"referenceName": "DelimitedText2",
 						"type": "DatasetReference"
 					}
 				]
