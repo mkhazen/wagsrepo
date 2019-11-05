@@ -1,0 +1,92 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "factoryName": {
+            "type": "string",
+            "metadata": "Data Factory name",
+            "defaultValue": "wagsdm"
+        },
+        "integrationRuntime_mltest1": {
+            "type": "string",
+            "metadata": "Integration runtime name",
+            "defaultValue": "mltest1"
+        },
+        "AzureDataLakeStorage1_accountKey": {
+            "type": "secureString",
+            "metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
+        },
+        "FileServer1_password": {
+            "type": "secureString",
+            "metadata": "Secure string for 'password' of 'FileServer1'"
+        },
+        "wagsADB_accessToken": {
+            "type": "secureString",
+            "metadata": "Secure string for 'accessToken' of 'wagsADB'"
+        },
+        "AzureDataLakeStorage1_properties_typeProperties_url": {
+            "type": "string",
+            "defaultValue": "https://waginput.dfs.core.windows.net"
+        },
+        "FileServer1_properties_typeProperties_host": {
+            "type": "string",
+            "defaultValue": "C:\\Work\\"
+        },
+        "FileServer1_properties_typeProperties_userId": {
+            "type": "string",
+            "defaultValue": "vmadmin"
+        },
+        "containerUri": {
+            "type": "string",
+            "metadata": "URI to storage account containing linked ARM templates"
+        },
+        "containerSasToken": {
+            "type": "string",
+            "metadata": "Sas token to storage account containing linked ARM templates"
+        }
+    },
+    "variables": {
+        "factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+    },
+    "resources": [
+        {
+            "name": "ArmTemplate_0",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-02-01",
+            "properties": {
+                "mode": "incremental",
+                "templateLink": {
+                    "uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "factoryName": {
+                        "value": "[parameters('factoryName')]"
+                    },
+                    "integrationRuntime_mltest1": {
+                        "value": "[parameters('integrationRuntime_mltest1')]"
+                    },
+                    "AzureDataLakeStorage1_accountKey": {
+                        "value": "[parameters('AzureDataLakeStorage1_accountKey')]"
+                    },
+                    "wagsADB_accessToken": {
+                        "value": "[parameters('wagsADB_accessToken')]"
+                    },
+                    "FileServer1_password": {
+                        "value": "[parameters('FileServer1_password')]"
+                    },
+                    "AzureDataLakeStorage1_properties_typeProperties_url": {
+                        "value": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]"
+                    },
+                    "FileServer1_properties_typeProperties_host": {
+                        "value": "[parameters('FileServer1_properties_typeProperties_host')]"
+                    },
+                    "FileServer1_properties_typeProperties_userId": {
+                        "value": "[parameters('FileServer1_properties_typeProperties_userId')]"
+                    }
+                }
+            },
+            "dependsOn": []
+        }
+    ]
+}

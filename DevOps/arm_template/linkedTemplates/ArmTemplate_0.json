@@ -1,0 +1,424 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "factoryName": {
+            "type": "string",
+            "metadata": "Data Factory name",
+            "defaultValue": "wagsdm"
+        },
+        "integrationRuntime_mltest1": {
+            "type": "string",
+            "metadata": "Integration runtime name",
+            "defaultValue": "mltest1"
+        },
+        "AzureDataLakeStorage1_accountKey": {
+            "type": "secureString",
+            "metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
+        },
+        "wagsADB_accessToken": {
+            "type": "secureString",
+            "metadata": "Secure string for 'accessToken' of 'wagsADB'"
+        },
+        "FileServer1_password": {
+            "type": "secureString",
+            "metadata": "Secure string for 'password' of 'FileServer1'"
+        },
+        "AzureDataLakeStorage1_properties_typeProperties_url": {
+            "type": "string",
+            "defaultValue": "https://waginput.dfs.core.windows.net"
+        },
+        "FileServer1_properties_typeProperties_host": {
+            "type": "string",
+            "defaultValue": "C:\\Work\\"
+        },
+        "FileServer1_properties_typeProperties_userId": {
+            "type": "string",
+            "defaultValue": "vmadmin"
+        }
+    },
+    "variables": {
+        "factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage1')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureBlobFS",
+                "typeProperties": {
+                    "url": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]",
+                    "accountKey": {
+                        "type": "SecureString",
+                        "value": "[parameters('AzureDataLakeStorage1_accountKey')]"
+                    }
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/wagsADB')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureDatabricks",
+                "typeProperties": {
+                    "domain": "https://eastus2.azuredatabricks.net",
+                    "accessToken": {
+                        "type": "SecureString",
+                        "value": "[parameters('wagsADB_accessToken')]"
+                    },
+                    "newClusterNodeType": "Standard_DS3_v2",
+                    "newClusterNumOfWorker": "2:5",
+                    "newClusterSparkEnvVars": {
+                        "PYSPARK_PYTHON": "/databricks/python3/bin/python3"
+                    },
+                    "newClusterVersion": "5.4.x-scala2.11"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/', parameters('integrationRuntime_mltest1'))]",
+            "type": "Microsoft.DataFactory/factories/integrationRuntimes",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "SelfHosted",
+                "description": "Vm for machine learning.",
+                "typeProperties": {}
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/Binary1')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "AzureDataLakeStorage1",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "Binary",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobFSLocation",
+                        "fileSystem": "incoming"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/DelimitedText2')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "AzureDataLakeStorage1",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "DelimitedText",
+                "typeProperties": {
+                    "location": {
+                        "type": "AzureBlobFSLocation",
+                        "fileName": "test.csv",
+                        "fileSystem": "incoming"
+                    },
+                    "columnDelimiter": ",",
+                    "escapeChar": "\\",
+                    "firstRowAsHeader": true,
+                    "quoteChar": "\""
+                },
+                "schema": [
+                    {
+                        "name": "key",
+                        "type": "String"
+                    },
+                    {
+                        "name": "pickup_datetime",
+                        "type": "String"
+                    },
+                    {
+                        "name": "pickup_longitude",
+                        "type": "String"
+                    },
+                    {
+                        "name": "pickup_latitude",
+                        "type": "String"
+                    },
+                    {
+                        "name": "dropoff_longitude",
+                        "type": "String"
+                    },
+                    {
+                        "name": "dropoff_latitude",
+                        "type": "String"
+                    },
+                    {
+                        "name": "passenger_count",
+                        "type": "String"
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/FileServer1')]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "FileServer",
+                "typeProperties": {
+                    "host": "[parameters('FileServer1_properties_typeProperties_host')]",
+                    "userId": "[parameters('FileServer1_properties_typeProperties_userId')]",
+                    "password": {
+                        "type": "SecureString",
+                        "value": "[parameters('FileServer1_password')]"
+                    }
+                },
+                "connectVia": {
+                    "referenceName": "[parameters('integrationRuntime_mltest1')]",
+                    "type": "IntegrationRuntimeReference"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/integrationRuntimes/', parameters('integrationRuntime_mltest1'))]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "FileServer1",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "DelimitedText",
+                "typeProperties": {
+                    "location": {
+                        "type": "FileServerLocation",
+                        "fileName": "test.csv",
+                        "folderPath": "wags"
+                    },
+                    "columnDelimiter": ",",
+                    "escapeChar": "\\",
+                    "firstRowAsHeader": true,
+                    "quoteChar": "\""
+                },
+                "schema": [
+                    {
+                        "name": "key",
+                        "type": "String"
+                    },
+                    {
+                        "name": "pickup_datetime",
+                        "type": "String"
+                    },
+                    {
+                        "name": "pickup_longitude",
+                        "type": "String"
+                    },
+                    {
+                        "name": "pickup_latitude",
+                        "type": "String"
+                    },
+                    {
+                        "name": "dropoff_longitude",
+                        "type": "String"
+                    },
+                    {
+                        "name": "dropoff_latitude",
+                        "type": "String"
+                    },
+                    {
+                        "name": "passenger_count",
+                        "type": "String"
+                    }
+                ]
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/FileServer1')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/ADBNotebookRun')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "wagsscm",
+                        "type": "DatabricksNotebook",
+                        "dependsOn": [
+                            {
+                                "activity": "OnPrem to Blob",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "notebookPath": "/Users/babal@microsoft.com/SCM/test1scala"
+                        },
+                        "linkedServiceName": {
+                            "referenceName": "wagsADB",
+                            "type": "LinkedServiceReference"
+                        }
+                    },
+                    {
+                        "name": "OnPrem to Blob",
+                        "type": "Copy",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "source": {
+                                "type": "DelimitedTextSource",
+                                "storeSettings": {
+                                    "type": "FileServerReadSettings",
+                                    "recursive": true
+                                },
+                                "formatSettings": {
+                                    "type": "DelimitedTextReadSettings"
+                                }
+                            },
+                            "sink": {
+                                "type": "DelimitedTextSink",
+                                "storeSettings": {
+                                    "type": "AzureBlobFSWriteSettings"
+                                },
+                                "formatSettings": {
+                                    "type": "DelimitedTextWriteSettings",
+                                    "quoteAllText": true,
+                                    "fileExtension": ".txt"
+                                }
+                            },
+                            "enableStaging": false,
+                            "translator": {
+                                "type": "TabularTranslator",
+                                "mappings": [
+                                    {
+                                        "source": {
+                                            "name": "key",
+                                            "type": "String"
+                                        },
+                                        "sink": {
+                                            "name": "key",
+                                            "type": "String"
+                                        }
+                                    },
+                                    {
+                                        "source": {
+                                            "name": "pickup_datetime",
+                                            "type": "String"
+                                        },
+                                        "sink": {
+                                            "name": "pickup_datetime",
+                                            "type": "String"
+                                        }
+                                    },
+                                    {
+                                        "source": {
+                                            "name": "pickup_longitude",
+                                            "type": "String"
+                                        },
+                                        "sink": {
+                                            "name": "pickup_longitude",
+                                            "type": "String"
+                                        }
+                                    },
+                                    {
+                                        "source": {
+                                            "name": "pickup_latitude",
+                                            "type": "String"
+                                        },
+                                        "sink": {
+                                            "name": "pickup_latitude",
+                                            "type": "String"
+                                        }
+                                    },
+                                    {
+                                        "source": {
+                                            "name": "dropoff_longitude",
+                                            "type": "String"
+                                        },
+                                        "sink": {
+                                            "name": "dropoff_longitude",
+                                            "type": "String"
+                                        }
+                                    },
+                                    {
+                                        "source": {
+                                            "name": "dropoff_latitude",
+                                            "type": "String"
+                                        },
+                                        "sink": {
+                                            "name": "dropoff_latitude",
+                                            "type": "String"
+                                        }
+                                    },
+                                    {
+                                        "source": {
+                                            "name": "passenger_count",
+                                            "type": "String"
+                                        },
+                                        "sink": {
+                                            "name": "passenger_count",
+                                            "type": "String"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        "inputs": [
+                            {
+                                "referenceName": "DelimitedText1",
+                                "type": "DatasetReference",
+                                "parameters": {}
+                            }
+                        ],
+                        "outputs": [
+                            {
+                                "referenceName": "DelimitedText2",
+                                "type": "DatasetReference",
+                                "parameters": {}
+                            }
+                        ]
+                    }
+                ],
+                "annotations": []
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/wagsADB')]",
+                "[concat(variables('factoryId'), '/datasets/DelimitedText1')]",
+                "[concat(variables('factoryId'), '/datasets/DelimitedText2')]"
+            ]
+        }
+    ]
+}
