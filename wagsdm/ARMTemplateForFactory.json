@@ -554,11 +554,17 @@
 							"storedProcedureName": "[[dbo].[closebatch]",
 							"storedProcedureParameters": {
 								"batchid": {
-									"value": "@activity('createBatchID').output",
-									"type": "Int32"
+									"value": {
+										"value": "@activity('createBatchID').output.value",
+										"type": "Expression"
+									},
+									"type": "String"
 								},
 								"enddatetime": {
-									"value": "",
+									"value": {
+										"value": "@utcnow()",
+										"type": "Expression"
+									},
 									"type": "DateTime"
 								}
 							}
