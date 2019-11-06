@@ -21,6 +21,49 @@
 					"referenceName": "AzureSQlETL",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "closebatch",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "createBatchID",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[closebatch]",
+					"storedProcedureParameters": {
+						"batchid": {
+							"value": {
+								"value": "@take(activity('createBatchID').output,1)",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						},
+						"enddatetime": {
+							"value": {
+								"value": "@utcnow()",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureSQlETL",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"annotations": []
