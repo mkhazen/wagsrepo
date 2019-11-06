@@ -288,26 +288,6 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "createBatchID",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[createbatch]"
-						},
-						"linkedServiceName": {
-							"referenceName": "AzureSQlETL",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
 						"name": "closebatch",
 						"type": "SqlServerStoredProcedure",
 						"dependsOn": [
@@ -331,16 +311,13 @@
 							"storedProcedureParameters": {
 								"batchid": {
 									"value": {
-										"value": "@activity('createBatchID').batchid",
+										"value": "@activity('createBatchID').output.firstRow.batchid",
 										"type": "Expression"
 									},
 									"type": "Int32"
 								},
 								"enddatetime": {
-									"value": {
-										"value": "@utcnow()",
-										"type": "Expression"
-									},
+									"value": "",
 									"type": "DateTime"
 								}
 							}
@@ -349,12 +326,37 @@
 							"referenceName": "AzureSQlETL",
 							"type": "LinkedServiceReference"
 						}
+					},
+					{
+						"name": "createBatchID",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[createbatch]"
+							},
+							"dataset": {
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
 					}
 				],
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureSQlETL')]"
+				"[concat(variables('factoryId'), '/linkedServices/AzureSQlETL')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]"
 			]
 		},
 		{
@@ -580,6 +582,68 @@
 				"typeProperties": {}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSQlETL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "batchname",
+						"type": "varchar"
+					},
+					{
+						"name": "startdatetime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "enddatetime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "batchstatus",
+						"type": "varchar"
+					},
+					{
+						"name": "totaltimesec",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "inserttime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "username",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "etlbatch"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSQlETL')]"
+			]
 		}
 	]
 }
