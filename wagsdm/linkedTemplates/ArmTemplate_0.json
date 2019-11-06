@@ -265,7 +265,7 @@
 										"value": "@activity('createBatchID').output",
 										"type": "Expression"
 									},
-									"type": "String"
+									"type": "int"
 								},
 								"enddatetime": {
 									"value": {
