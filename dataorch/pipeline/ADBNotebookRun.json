@@ -221,12 +221,6 @@
 				}
 			}
 		],
-		"variables": {
-			"batchid": {
-				"type": "String",
-				"defaultValue": "@activity('createBatchID').output.firstRow.batchid"
-			}
-		},
 		"annotations": []
 	}
 }
