@@ -52,7 +52,10 @@
 							"type": "String"
 						},
 						"enddatetime": {
-							"value": "",
+							"value": {
+								"value": "@utcnow()",
+								"type": "Expression"
+							},
 							"type": "DateTime"
 						}
 					}
