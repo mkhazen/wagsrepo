@@ -310,7 +310,10 @@
 									"type": "Int32"
 								},
 								"enddatetime": {
-									"value": "",
+									"value": {
+										"value": "@utcnow(utcnow())",
+										"type": "Expression"
+									},
 									"type": "DateTime"
 								}
 							}
