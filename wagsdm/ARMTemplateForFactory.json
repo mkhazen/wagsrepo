@@ -274,15 +274,6 @@
 						}
 					}
 				],
-				"parameters": {
-					"batchid": {
-						"type": "string",
-						"defaultValue": "@{activity{'createBatchID'}.output.firstRow.batchid}"
-					},
-					"enddatetime": {
-						"type": "string"
-					}
-				},
 				"annotations": []
 			},
 			"dependsOn": [
