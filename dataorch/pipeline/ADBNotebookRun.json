@@ -171,6 +171,12 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
+				"userProperties": [
+					{
+						"name": "batchid",
+						"value": "@{activity{'createBatchID'}.output.firstRow.batchid}"
+					}
+				],
 				"typeProperties": {
 					"storedProcedureName": "[dbo].[createbatch]"
 				},
