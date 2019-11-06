@@ -225,7 +225,7 @@
 		],
 		"parameters": {
 			"batchid": {
-				"type": "int",
+				"type": "string",
 				"defaultValue": "@{activity{'createBatchID'}.output.firstRow.batchid}"
 			},
 			"enddatetime": {
