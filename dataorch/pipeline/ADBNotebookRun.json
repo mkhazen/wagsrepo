@@ -32,7 +32,14 @@
 			{
 				"name": "OnPrem to Blob",
 				"type": "Copy",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "createBatchID",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -152,8 +159,73 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "createBatchID",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[createbatch]"
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureSQlETL",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "closebatch",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "wagsscm",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[closebatch]",
+					"storedProcedureParameters": {
+						"batchid": {
+							"value": "@{activity{'createBatchID'}.output.firstRow.batchid}",
+							"type": "Int32"
+						},
+						"enddatetime": {
+							"value": "",
+							"type": "DateTime"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureSQlETL",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
+		"parameters": {
+			"batchid": {
+				"type": "int",
+				"defaultValue": "@{activity{'createBatchID'}.output.firstRow.batchid}"
+			},
+			"enddatetime": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }
