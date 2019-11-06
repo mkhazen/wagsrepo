@@ -16,6 +16,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
 		},
+		"AzureSQlETL_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureSQlETL'"
+		},
 		"FileServer1_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'FileServer1'"
@@ -23,10 +27,6 @@
 		"wagsADB_accessToken": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'wagsADB'"
-		},
-		"AzureSQlETL_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureSQlETL'"
 		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"type": "string",
@@ -73,11 +73,11 @@
 					"AzureDataLakeStorage1_accountKey": {
 						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
 					},
-					"wagsADB_accessToken": {
-						"value": "[parameters('wagsADB_accessToken')]"
-					},
 					"AzureSQlETL_connectionString": {
 						"value": "[parameters('AzureSQlETL_connectionString')]"
+					},
+					"wagsADB_accessToken": {
+						"value": "[parameters('wagsADB_accessToken')]"
 					},
 					"FileServer1_password": {
 						"value": "[parameters('FileServer1_password')]"
