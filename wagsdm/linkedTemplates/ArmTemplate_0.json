@@ -446,12 +446,7 @@
 							"secureOutput": false,
 							"secureInput": false
 						},
-						"userProperties": [
-							{
-								"name": "batchid",
-								"value": "@{activity{'createBatchID'}.output.firstRow.batchid}"
-							}
-						],
+						"userProperties": [],
 						"typeProperties": {
 							"storedProcedureName": "[[dbo].[createbatch]"
 						},
@@ -483,7 +478,10 @@
 							"storedProcedureName": "[[dbo].[closebatch]",
 							"storedProcedureParameters": {
 								"batchid": {
-									"value": "@{activity{'createBatchID'}.output.firstRow.batchid}",
+									"value": {
+										"value": "@activity('createBatchID').output.firstRow.batchid",
+										"type": "Expression"
+									},
 									"type": "Int32"
 								},
 								"enddatetime": {
@@ -498,6 +496,12 @@
 						}
 					}
 				],
+				"variables": {
+					"batchid": {
+						"type": "String",
+						"defaultValue": "@activity('createBatchID').output.firstRow.batchid"
+					}
+				},
 				"annotations": []
 			},
 			"dependsOn": [
