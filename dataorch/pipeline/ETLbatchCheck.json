@@ -46,7 +46,7 @@
 					"storedProcedureParameters": {
 						"batchid": {
 							"value": {
-								"value": "@activity('createBatchID').output.batchid",
+								"value": "@activity('createBatchID').batchid",
 								"type": "Expression"
 							},
 							"type": "Int32"
