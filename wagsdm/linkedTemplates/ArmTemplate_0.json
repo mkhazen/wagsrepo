@@ -579,26 +579,6 @@
 						]
 					},
 					{
-						"name": "createBatchID",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[createbatch]"
-						},
-						"linkedServiceName": {
-							"referenceName": "AzureSQlETL",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
 						"name": "closebatch",
 						"type": "SqlServerStoredProcedure",
 						"dependsOn": [
@@ -621,14 +601,14 @@
 							"storedProcedureName": "[[dbo].[closebatch]",
 							"storedProcedureParameters": {
 								"batchid": {
-									"value": {
-										"value": "@activity('createBatchID').output",
-										"type": "Expression"
-									},
+									"value": "@activity('createBatchID').output.firstRow.batchid",
 									"type": "Int32"
 								},
 								"enddatetime": {
-									"value": "",
+									"value": {
+										"value": "@utcnow()",
+										"type": "Expression"
+									},
 									"type": "DateTime"
 								}
 							}
@@ -636,6 +616,30 @@
 						"linkedServiceName": {
 							"referenceName": "AzureSQlETL",
 							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "createBatchID",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[createbatch]"
+							},
+							"dataset": {
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
 						}
 					}
 				],
@@ -645,7 +649,8 @@
 				"[concat(variables('factoryId'), '/linkedServices/wagsADB')]",
 				"[concat(variables('factoryId'), '/datasets/DelimitedText1')]",
 				"[concat(variables('factoryId'), '/datasets/DelimitedText2')]",
-				"[concat(variables('factoryId'), '/linkedServices/AzureSQlETL')]"
+				"[concat(variables('factoryId'), '/linkedServices/AzureSQlETL')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]"
 			]
 		}
 	]
