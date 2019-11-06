@@ -8,23 +8,26 @@
 		"integrationRuntime_mltest1": {
 			"value": "mltest1"
 		},
-		"wagsADB_accessToken": {
+		"AzureDataLakeStorage1_accountKey": {
 			"value": ""
 		},
 		"FileServer1_password": {
 			"value": ""
 		},
-		"AzureDataLakeStorage1_accountKey": {
+		"wagsADB_accessToken": {
 			"value": ""
+		},
+		"AzureSQlETL_connectionString": {
+			"value": ""
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"value": "https://waginput.dfs.core.windows.net"
 		},
 		"FileServer1_properties_typeProperties_host": {
 			"value": "C:\\Work\\"
 		},
 		"FileServer1_properties_typeProperties_userId": {
 			"value": "vmadmin"
-		},
-		"AzureDataLakeStorage1_properties_typeProperties_url": {
-			"value": "https://waginput.dfs.core.windows.net"
 		},
 		"containerUri": {
 			"value": ""
