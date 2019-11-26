@@ -411,8 +411,8 @@
 						}
 					},
 					{
-						"name": "ForEach1",
-						"type": "ForEach",
+						"name": "If Condition1",
+						"type": "IfCondition",
 						"dependsOn": [
 							{
 								"activity": "ZipMetadata",
@@ -423,23 +423,19 @@
 						],
 						"userProperties": [],
 						"typeProperties": {
-							"items": {
-								"value": "@activity('ZipMetadata').output.childItems",
+							"expression": {
+								"value": "@activity('ZipMetadata').output.childitems.length >=2",
 								"type": "Expression"
 							},
-							"isSequential": true,
-							"activities": [
+							"ifTrueActivities": [
 								{
-									"name": "Set variable1",
+									"name": "Set variable2",
 									"type": "SetVariable",
 									"dependsOn": [],
 									"userProperties": [],
 									"typeProperties": {
 										"variableName": "dummyvar",
-										"value": {
-											"value": "@string(add(pipeline().parameters.filecnt,1))",
-											"type": "Expression"
-										}
+										"value": "@string(add(pipeline().parameters.filecnt,1))"
 									}
 								}
 							]
