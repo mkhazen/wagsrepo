@@ -12,6 +12,10 @@
 			"metadata": "Integration runtime name",
 			"defaultValue": "mltest1"
 		},
+		"AzureBlobStorage1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
+		},
 		"AzureDataLakeStorage1_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
@@ -234,7 +238,10 @@
 							"storedProcedureName": "[[dbo].[closebatch]",
 							"storedProcedureParameters": {
 								"batchid": {
-									"value": "@activity('createBatchID').output.firstRow.batchid",
+									"value": {
+										"value": "@activity('createBatchID').output.firstRow.batchid",
+										"type": "Expression"
+									},
 									"type": "Int32"
 								},
 								"enddatetime": {
@@ -365,6 +372,158 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureSQlETL')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/filecheck')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ZipMetadata",
+						"type": "GetMetadata",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "filecheck",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true
+							},
+							"formatSettings": {
+								"type": "DelimitedTextReadSettings"
+							}
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "ZipMetadata",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('ZipMetadata').output",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Set variable1",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "dummyvar",
+										"value": {
+											"value": "@string(add(pipeline().parameters.filecnt,1))",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"filecnt": {
+						"type": "int",
+						"defaultValue": 0
+					}
+				},
+				"variables": {
+					"dummyvar": {
+						"type": "String",
+						"defaultValue": "0"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/filecheck')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSQlETL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "batchname",
+						"type": "varchar"
+					},
+					{
+						"name": "startdatetime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "enddatetime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "batchstatus",
+						"type": "varchar"
+					},
+					{
+						"name": "totaltimesec",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "inserttime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "username",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "etlbatch"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSQlETL')]"
 			]
 		},
 		{
@@ -504,6 +663,55 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/filecheck')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "startjob"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureBlobStorage1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage1')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -590,68 +798,6 @@
 				"typeProperties": {}
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSQlETL",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "id",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "batchname",
-						"type": "varchar"
-					},
-					{
-						"name": "startdatetime",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "enddatetime",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "batchstatus",
-						"type": "varchar"
-					},
-					{
-						"name": "totaltimesec",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "inserttime",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "username",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "etlbatch"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureSQlETL')]"
-			]
 		}
 	]
 }
