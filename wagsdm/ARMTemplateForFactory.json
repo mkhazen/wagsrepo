@@ -424,7 +424,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"expression": {
-								"value": "@activity('ZipMetadata').output.childitems.length >=2",
+								"value": "@activity('ZipMetadata').output.childitems.length == 2",
 								"type": "Expression"
 							},
 							"ifTrueActivities": [
