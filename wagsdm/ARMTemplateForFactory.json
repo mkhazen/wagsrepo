@@ -424,7 +424,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"items": {
-								"value": "@activity('ZipMetadata').output",
+								"value": "@activity('ZipMetadata').output.childItems",
 								"type": "Expression"
 							},
 							"isSequential": true,
