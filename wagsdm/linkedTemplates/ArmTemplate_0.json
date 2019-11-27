@@ -500,8 +500,8 @@
 						}
 					},
 					{
-						"name": "If Condition1",
-						"type": "IfCondition",
+						"name": "Set variable4",
+						"type": "SetVariable",
 						"dependsOn": [
 							{
 								"activity": "ForEach1",
@@ -512,8 +512,9 @@
 						],
 						"userProperties": [],
 						"typeProperties": {
-							"expression": {
-								"value": "@variables('filelist').length == 2",
+							"variableName": "filelistcount",
+							"value": {
+								"value": "@string(length(variables('filelist')))",
 								"type": "Expression"
 							}
 						}
@@ -532,6 +533,9 @@
 					},
 					"filelist": {
 						"type": "Array"
+					},
+					"filelistcount": {
+						"type": "String"
 					}
 				},
 				"annotations": []
