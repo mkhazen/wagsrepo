@@ -77,7 +77,10 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "filelist",
-								"value": ""
+								"value": {
+									"value": "@variables('dummyvar')",
+									"type": "Expression"
+								}
 							}
 						}
 					]
