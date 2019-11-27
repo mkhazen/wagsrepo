@@ -533,7 +533,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"expression": {
-								"value": "@if(equals(variables('filelistcount'),'2'),'yes','no')",
+								"value": "@equals(variables('filelistcount'),'2')",
 								"type": "Expression"
 							}
 						}
