@@ -70,7 +70,7 @@
 		"parameters": {
 			"filecnt": {
 				"type": "int",
-				"defaultValue": "@length(@activity('ZipMetadata').output.childItems)"
+				"defaultValue": 0
 			}
 		},
 		"variables": {
