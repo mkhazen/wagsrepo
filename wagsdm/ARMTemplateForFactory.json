@@ -444,6 +444,25 @@
 								}
 							]
 						}
+					},
+					{
+						"name": "If Condition1",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "ZipMetadata",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@activity('ZipMetadata').output.childitems.length == 2",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"parameters": {
