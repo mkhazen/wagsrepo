@@ -471,7 +471,7 @@
 									"typeProperties": {
 										"variableName": "dummyvar",
 										"value": {
-											"value": "@string(add(pipeline().parameters.filecnt,1))",
+											"value": "@item().name",
 											"type": "Expression"
 										}
 									}
@@ -493,7 +493,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"expression": {
-								"value": "@activity('ZipMetadata').output.childitems.ItemsCount == 2",
+								"value": "@activity('ZipMetadata').output.ItemsCount == 2",
 								"type": "Expression"
 							}
 						}
