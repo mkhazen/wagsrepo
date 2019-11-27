@@ -62,8 +62,44 @@
 									"type": "Expression"
 								}
 							}
+						},
+						{
+							"name": "Append variable1",
+							"type": "AppendVariable",
+							"dependsOn": [
+								{
+									"activity": "Set variable3",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "filelist",
+								"value": ""
+							}
 						}
 					]
+				}
+			},
+			{
+				"name": "If Condition1",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "ForEach1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@variables('filelist').length == 2",
+						"type": "Expression"
+					}
 				}
 			}
 		],
@@ -77,6 +113,9 @@
 			"dummyvar": {
 				"type": "String",
 				"defaultValue": "0"
+			},
+			"filelist": {
+				"type": "Array"
 			}
 		},
 		"annotations": []
