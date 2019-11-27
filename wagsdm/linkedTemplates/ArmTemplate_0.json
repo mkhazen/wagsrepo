@@ -445,37 +445,6 @@
 						}
 					},
 					{
-						"name": "If Condition1",
-						"type": "IfCondition",
-						"dependsOn": [
-							{
-								"activity": "ZipMetadata",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@activity('ZipMetadata').output.childitems.length == 2",
-								"type": "Expression"
-							},
-							"ifTrueActivities": [
-								{
-									"name": "Set variable2",
-									"type": "SetVariable",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "dummyvar",
-										"value": "@string(add(pipeline().parameters.filecnt,1))"
-									}
-								}
-							]
-						}
-					},
-					{
 						"name": "ForEach1",
 						"type": "ForEach",
 						"dependsOn": [
