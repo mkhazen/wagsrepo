@@ -80,7 +80,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@activity('ZipMetadata').output.childitems.count == 2",
+						"value": "@activity('ZipMetadata').output.childitems.ItemsCount== 2",
 						"type": "Expression"
 					}
 				}
