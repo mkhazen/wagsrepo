@@ -39,10 +39,10 @@ Drag and drop getmetadata and configure to point to the folder where files are g
 i used blob storage and named the directory as startjob.
 
 GetMetadata:
-![alt text](https://github.com/balakreshnan/wagsrepo/blob/master/images/img21.jpg "Create GetMetadata")
+![alt text](https://github.com/balakreshnan/wagsrepo/blob/master/images/img21.JPG "Create GetMetadata")
 
 Blob Connection configuration for getmetadata:
-![alt text](https://github.com/balakreshnan/wagsrepo/blob/master/images/img22.jpg "Blob configuration")
+![alt text](https://github.com/balakreshnan/wagsrepo/blob/master/images/img22.JPG "Blob configuration")
 
 ## Setup Foreach
 
