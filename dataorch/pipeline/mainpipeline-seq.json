@@ -68,6 +68,10 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Finalize",
+						"type": "PipelineReference"
+					},
 					"waitOnCompletion": true
 				}
 			}
