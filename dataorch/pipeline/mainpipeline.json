@@ -56,7 +56,7 @@
 				}
 			},
 			{
-				"name": "Execute Cleanup",
+				"name": "Post Cleanup",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
