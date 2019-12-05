@@ -957,7 +957,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Final Check",
+						"name": "Pre Validation",
 						"type": "ExecutePipeline",
 						"dependsOn": [],
 						"userProperties": [],
@@ -975,7 +975,7 @@
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "Final Check",
+								"activity": "Pre Validation",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -996,7 +996,7 @@
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "Final Check",
+								"activity": "Pre Validation",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -1013,7 +1013,7 @@
 						}
 					},
 					{
-						"name": "Execute Cleanup",
+						"name": "Post Cleanup",
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
