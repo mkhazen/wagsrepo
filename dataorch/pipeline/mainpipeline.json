@@ -54,6 +54,32 @@
 					},
 					"waitOnCompletion": true
 				}
+			},
+			{
+				"name": "Execute Cleanup",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Execute Purchasing",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Execute Sales",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Finalize",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
 			}
 		],
 		"annotations": []
