@@ -20,6 +20,8 @@ The challenge here is do we run each table sequentially, or should we run all th
 - Data quality check
 - Data security processing
 - Data catalog/MDM integration
+- Parameters/variables used for notebooks and passing that from ADF
+
 
 ## Option 1
 
@@ -28,3 +30,7 @@ The challenge here is do we run each table sequentially, or should we run all th
 ## Option 2
 
 ![alt text](https://github.com/balakreshnan/wagsrepo/blob/master/images/imgadf2.jpg "Sequential")
+
+## Execution logging results
+
+![alt text](https://github.com/balakreshnan/wagsrepo/blob/master/images/imgadf3.jpg "Monitor")
