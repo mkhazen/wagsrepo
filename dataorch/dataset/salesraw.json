@@ -11,6 +11,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": "bankmarketing_train.csv",
+				"folderPath": "sales",
 				"fileSystem": "raw"
 			},
 			"columnDelimiter": ",",
