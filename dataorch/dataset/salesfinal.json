@@ -10,6 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"folderPath": "sales",
 				"fileSystem": "final"
 			},
 			"columnDelimiter": ",",
