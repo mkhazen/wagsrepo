@@ -1,5 +1,5 @@
 {
-	"name": "mainpipeline-par",
+	"name": "mainpipeline-seq",
 	"properties": {
 		"activities": [
 			{
@@ -40,7 +40,7 @@
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "Pre Validation",
+						"activity": "Execute Purchasing",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -60,12 +60,6 @@
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "Execute Purchasing",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
 						"activity": "Execute Sales",
 						"dependencyConditions": [
 							"Succeeded"
@@ -74,10 +68,6 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"pipeline": {
-						"referenceName": "Finalize",
-						"type": "PipelineReference"
-					},
 					"waitOnCompletion": true
 				}
 			}
