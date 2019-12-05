@@ -396,6 +396,7 @@
 					"location": {
 						"type": "AzureBlobFSLocation",
 						"fileName": "bankmarketing_train.csv",
+						"folderPath": "purchasing",
 						"fileSystem": "raw"
 					},
 					"columnDelimiter": ",",
@@ -508,6 +509,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
+						"folderPath": "purchasing",
 						"fileSystem": "final"
 					},
 					"columnDelimiter": ",",
@@ -536,6 +538,7 @@
 					"location": {
 						"type": "AzureBlobFSLocation",
 						"fileName": "bankmarketing_train.csv",
+						"folderPath": "sales",
 						"fileSystem": "raw"
 					},
 					"columnDelimiter": ",",
@@ -648,6 +651,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
+						"folderPath": "sales",
 						"fileSystem": "final"
 					},
 					"columnDelimiter": ",",
