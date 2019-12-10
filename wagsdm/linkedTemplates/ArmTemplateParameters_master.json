@@ -20,10 +20,10 @@
 		"FileServer1_password": {
 			"value": ""
 		},
-		"wagsADB_accessToken": {
+		"runnotebook_accessToken": {
 			"value": ""
 		},
-		"runnotebook_accessToken": {
+		"wagsADB_accessToken": {
 			"value": ""
 		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
