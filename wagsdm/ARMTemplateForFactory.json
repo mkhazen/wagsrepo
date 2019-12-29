@@ -429,6 +429,42 @@
 								"dependencyConditions": [
 									"Succeeded"
 								]
+							},
+							{
+								"activity": "etlADF3",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "etlADF4",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "etlADF5",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "etlADF6",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "etlADF7",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "etlADF8",
+								"dependencyConditions": [
+									"Succeeded"
+								]
 							}
 						],
 						"policy": {
@@ -441,6 +477,168 @@
 						"userProperties": [],
 						"typeProperties": {
 							"notebookPath": "/Users/babal@microsoft.com/SCM/runnotebook"
+						},
+						"linkedServiceName": {
+							"referenceName": "etlADF",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "etlADF3",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "Start",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/babal@microsoft.com/SCM/etlADF"
+						},
+						"linkedServiceName": {
+							"referenceName": "etlADF",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "etlADF4",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "Start",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/babal@microsoft.com/SCM/etlADF"
+						},
+						"linkedServiceName": {
+							"referenceName": "etlADF",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "etlADF5",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "Start",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/babal@microsoft.com/SCM/etlADF"
+						},
+						"linkedServiceName": {
+							"referenceName": "etlADF",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "etlADF6",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "Start",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/babal@microsoft.com/SCM/etlADF"
+						},
+						"linkedServiceName": {
+							"referenceName": "etlADF",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "etlADF7",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "Start",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/babal@microsoft.com/SCM/etlADF"
+						},
+						"linkedServiceName": {
+							"referenceName": "etlADF",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "etlADF8",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "Start",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/babal@microsoft.com/SCM/etlADF"
 						},
 						"linkedServiceName": {
 							"referenceName": "etlADF",
