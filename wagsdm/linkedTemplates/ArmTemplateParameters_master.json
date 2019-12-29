@@ -20,6 +20,9 @@
 		"FileServer1_password": {
 			"value": ""
 		},
+		"etlADF_accessToken": {
+			"value": ""
+		},
 		"runnotebook_accessToken": {
 			"value": ""
 		},
