@@ -5,7 +5,14 @@
 			{
 				"name": "etlADF",
 				"type": "DatabricksNotebook",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Start",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -25,7 +32,14 @@
 			{
 				"name": "etlADF1",
 				"type": "DatabricksNotebook",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Start",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -36,6 +50,92 @@
 				"userProperties": [],
 				"typeProperties": {
 					"notebookPath": "/Users/babal@microsoft.com/SCM/etlADF"
+				},
+				"linkedServiceName": {
+					"referenceName": "etlADF",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "etlADF2",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "Start",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/babal@microsoft.com/SCM/etlADF"
+				},
+				"linkedServiceName": {
+					"referenceName": "etlADF",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Start",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/babal@microsoft.com/SCM/runnotebook"
+				},
+				"linkedServiceName": {
+					"referenceName": "etlADF",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Stop",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "etlADF",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "etlADF1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "etlADF2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/babal@microsoft.com/SCM/runnotebook"
 				},
 				"linkedServiceName": {
 					"referenceName": "etlADF",
