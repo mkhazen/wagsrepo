@@ -34,3 +34,13 @@ The challenge here is do we run each table sequentially, or should we run all th
 ## Execution logging results
 
 ![alt text](https://github.com/balakreshnan/wagsrepo/blob/master/images/imgadf3.jpg "Monitor")
+
+## Option 3
+
+Eunning ADB notebooks in paralel. 10 notebooks took 12 minutes. 3 notebooks took 5 minutes. 2 notebooks took 4 minutes.
+
+![alt text](https://github.com/balakreshnan/wagsrepo/blob/master/images/adfadb1.jpg "Parallel")
+
+![alt text](https://github.com/balakreshnan/wagsrepo/blob/master/images/adfadb2.jpg "Parallel")
+
+![alt text](https://github.com/balakreshnan/wagsrepo/blob/master/images/adfadb3.png "Parallel")
