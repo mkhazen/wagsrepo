@@ -1201,13 +1201,13 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/jsoninput')]",
+			"name": "[concat(parameters('factoryName'), '/jsoninputpipeine')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "jsoninputpipeline",
+						"name": "jsoninput",
 						"type": "ExecuteDataFlow",
 						"dependsOn": [],
 						"policy": {
