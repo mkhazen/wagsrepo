@@ -1,9 +1,9 @@
 {
-	"name": "jsoninput",
+	"name": "jsoninputpipeine",
 	"properties": {
 		"activities": [
 			{
-				"name": "jsoninputpipeline",
+				"name": "jsoninput",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
