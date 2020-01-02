@@ -44,3 +44,6 @@ Running ADB notebooks in paralel. 10 notebooks took 12 minutes. 3 notebooks took
 ![alt text](https://github.com/balakreshnan/wagsrepo/blob/master/images/adfadb2.jpg "Parallel")
 
 ![alt text](https://github.com/balakreshnan/wagsrepo/blob/master/images/adfadb3.png "Parallel")
+
+Notebook for the above adf activity is here
+https://github.com/balakreshnan/wagsrepo/blob/master/etlADFtest.md
