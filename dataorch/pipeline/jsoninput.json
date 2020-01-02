@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "jsoninput",
+				"name": "jsoninputpipeline",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
