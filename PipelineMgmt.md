@@ -47,3 +47,15 @@ Running ADB notebooks in paralel. 10 notebooks took 12 minutes. 3 notebooks took
 
 Notebook for the above adf activity is here
 https://github.com/balakreshnan/wagsrepo/blob/master/etlADFtest.md
+
+## Results from different run
+
+Azure databricks VM size DSv4_s2 - 28GB Ram and 8 Cores as each VM.
+
+10 nodes - no scaling - 11 minutes
+
+5 nodes - no scaling - 9 minutes
+
+10 nodes - auto scaling starting with 6 to 10 - 10 minutes
+
+10 nodes - auto scaling 4 to 8 - 10 minutes
