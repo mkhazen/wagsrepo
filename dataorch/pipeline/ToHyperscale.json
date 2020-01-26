@@ -1,9 +1,9 @@
 {
-	"name": "prsqldwtohyperscale",
+	"name": "ToHyperscale",
 	"properties": {
 		"activities": [
 			{
-				"name": "sqldwtohtperscaleyellowtaxi",
+				"name": "toHyperscale",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
