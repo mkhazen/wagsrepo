@@ -693,220 +693,13 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/filecheck')]",
+			"name": "[concat(parameters('factoryName'), '/ToHyperscale')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "ZipMetadata",
-						"type": "GetMetadata",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "filecheck",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"fieldList": [
-								"childItems"
-							],
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": true
-							},
-							"formatSettings": {
-								"type": "DelimitedTextReadSettings"
-							}
-						}
-					},
-					{
-						"name": "ForEach1",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "ZipMetadata",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('ZipMetadata').output.childItems",
-								"type": "Expression"
-							},
-							"isSequential": true,
-							"activities": [
-								{
-									"name": "Set variable3",
-									"type": "SetVariable",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "dummyvar",
-										"value": {
-											"value": "@item().name",
-											"type": "Expression"
-										}
-									}
-								},
-								{
-									"name": "Append variable1",
-									"type": "AppendVariable",
-									"dependsOn": [
-										{
-											"activity": "Set variable3",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "filelist",
-										"value": {
-											"value": "@variables('dummyvar')",
-											"type": "Expression"
-										}
-									}
-								}
-							]
-						}
-					},
-					{
-						"name": "Set variable4",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "ForEach1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "filelistcount",
-							"value": {
-								"value": "@string(length(variables('filelist')))",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "If Condition1",
-						"type": "IfCondition",
-						"dependsOn": [
-							{
-								"activity": "Set variable4",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@equals(variables('filelistcount'),'2')",
-								"type": "Expression"
-							},
-							"ifTrueActivities": [
-								{
-									"name": "startjobtotmp",
-									"type": "Copy",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "DelimitedTextSource",
-											"storeSettings": {
-												"type": "AzureBlobStorageReadSettings",
-												"recursive": true,
-												"wildcardFileName": "*"
-											},
-											"formatSettings": {
-												"type": "DelimitedTextReadSettings"
-											}
-										},
-										"sink": {
-											"type": "DelimitedTextSink",
-											"storeSettings": {
-												"type": "AzureBlobStorageWriteSettings"
-											},
-											"formatSettings": {
-												"type": "DelimitedTextWriteSettings",
-												"quoteAllText": true,
-												"fileExtension": ".csv"
-											}
-										},
-										"enableStaging": false
-									},
-									"inputs": [
-										{
-											"referenceName": "filecheck",
-											"type": "DatasetReference",
-											"parameters": {}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "DelimitedText3",
-											"type": "DatasetReference",
-											"parameters": {}
-										}
-									]
-								}
-							]
-						}
-					}
-				],
-				"parameters": {
-					"filecnt": {
-						"type": "int",
-						"defaultValue": 0
-					}
-				},
-				"variables": {
-					"dummyvar": {
-						"type": "String",
-						"defaultValue": "0"
-					},
-					"filelist": {
-						"type": "Array"
-					},
-					"filelistcount": {
-						"type": "String"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/prsqldwtohyperscale')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "sqldwtohtperscaleyellowtaxi",
+						"name": "toHyperscale",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -1169,6 +962,213 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/filecheck')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ZipMetadata",
+						"type": "GetMetadata",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "filecheck",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true
+							},
+							"formatSettings": {
+								"type": "DelimitedTextReadSettings"
+							}
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "ZipMetadata",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('ZipMetadata').output.childItems",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Set variable3",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "dummyvar",
+										"value": {
+											"value": "@item().name",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Append variable1",
+									"type": "AppendVariable",
+									"dependsOn": [
+										{
+											"activity": "Set variable3",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "filelist",
+										"value": {
+											"value": "@variables('dummyvar')",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "Set variable4",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "ForEach1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "filelistcount",
+							"value": {
+								"value": "@string(length(variables('filelist')))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "If Condition1",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Set variable4",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@equals(variables('filelistcount'),'2')",
+								"type": "Expression"
+							},
+							"ifTrueActivities": [
+								{
+									"name": "startjobtotmp",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "DelimitedTextSource",
+											"storeSettings": {
+												"type": "AzureBlobStorageReadSettings",
+												"recursive": true,
+												"wildcardFileName": "*"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextReadSettings"
+											}
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".csv"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "filecheck",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DelimitedText3",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"filecnt": {
+						"type": "int",
+						"defaultValue": 0
+					}
+				},
+				"variables": {
+					"dummyvar": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"filelist": {
+						"type": "Array"
+					},
+					"filelistcount": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/purchasing')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1366,6 +1366,44 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/cpblobtohyperscale')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "prateekfiles",
+								"type": "DatasetReference"
+							},
+							"name": "prateekblob",
+							"typeProperties": {}
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "hyperscaleisi",
+								"type": "DatasetReference"
+							},
+							"name": "hyperscale"
+						}
+					],
+					"transformations": [
+						{
+							"name": "Select1"
+						}
+					],
+					"script": "source(output(\n\t\tvendorID as string,\n\t\ttpepPickupDateTime as timestamp,\n\t\ttpepDropoffDateTime as timestamp,\n\t\tpassengerCount as integer,\n\t\ttripDistance as double,\n\t\tpuLocationId as string,\n\t\tdoLocationId as string,\n\t\tstartLon as double,\n\t\tstartLat as double,\n\t\tendLon as double,\n\t\tendLat as double,\n\t\trateCodeId as integer,\n\t\tstoreAndFwdFlag as string,\n\t\tpaymentType as string,\n\t\tfareAmount as double,\n\t\textra as double,\n\t\tmtaTax as double,\n\t\timprovementSurcharge as string,\n\t\ttipAmount as double,\n\t\ttollsAmount as double,\n\t\ttotalAmount as double,\n\t\tpuYear as string,\n\t\tpuMonth as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet') ~> prateekblob\nprateekblob select(mapColumn(\n\t\tvendorID,\n\t\ttpepPickupDateTime,\n\t\ttpepDropoffDateTime,\n\t\tpassengerCount,\n\t\ttripDistance,\n\t\tpuLocationId,\n\t\tdoLocationId,\n\t\tstartLon,\n\t\tstartLat,\n\t\tendLon,\n\t\tendLat,\n\t\trateCodeId,\n\t\tstoreAndFwdFlag,\n\t\tpaymentType,\n\t\tfareAmount,\n\t\textra,\n\t\tmtaTax,\n\t\timprovementSurcharge,\n\t\ttipAmount,\n\t\ttollsAmount,\n\t\ttotalAmount,\n\t\tpuYear,\n\t\tpuMonth\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 sink(input(\n\t\tvendorID as string,\n\t\ttpepPickupDateTime as timestamp,\n\t\ttpepDropoffDateTime as timestamp,\n\t\tpassengerCount as integer,\n\t\ttripDistance as double,\n\t\tpuLocationId as string,\n\t\tdoLocationId as string,\n\t\tstartLon as double,\n\t\tstartLat as double,\n\t\tendLon as double,\n\t\tendLat as double,\n\t\trateCodeId as integer,\n\t\tstoreAndFwdFlag as string,\n\t\tpaymentType as string,\n\t\tfareAmount as double,\n\t\textra as double,\n\t\tmtaTax as double,\n\t\timprovementSurcharge as string,\n\t\ttipAmount as double,\n\t\ttollsAmount as double,\n\t\ttotalAmount as double\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tbatchSize: 10000,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> hyperscale"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/prateekfiles')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/ADBNotebookRun')]",
@@ -1763,98 +1801,6 @@
 									"Succeeded"
 								]
 							},
-							{
-								"activity": "Execute Sales",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "Finalize",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					}
-				],
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/filecheck')]",
-				"[concat(variables('factoryId'), '/pipelines/purchasing')]",
-				"[concat(variables('factoryId'), '/pipelines/Sales')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/mainpipeline-seq')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Pre Validation",
-						"type": "ExecutePipeline",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "filecheck",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "Execute Purchasing",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "Pre Validation",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "purchasing",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "Execute Sales",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "Execute Purchasing",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "Sales",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "Post Cleanup",
-						"type": "ExecutePipeline",
-						"dependsOn": [
 							{
 								"activity": "Execute Sales",
 								"dependencyConditions": [

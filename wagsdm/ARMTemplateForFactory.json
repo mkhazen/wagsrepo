@@ -882,6 +882,276 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ToHyperscale')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "toHyperscale",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ParquetSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "vendorID",
+											"type": "String"
+										},
+										"sink": {
+											"name": "vendorID",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "tpepPickupDateTime",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "tpepPickupDateTime",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "tpepDropoffDateTime",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "tpepDropoffDateTime",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "passengerCount",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "passengerCount",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "tripDistance",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "tripDistance",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "puLocationId",
+											"type": "String"
+										},
+										"sink": {
+											"name": "puLocationId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "doLocationId",
+											"type": "String"
+										},
+										"sink": {
+											"name": "doLocationId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "startLon",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "startLon",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "startLat",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "startLat",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "endLon",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "endLon",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "endLat",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "endLat",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "rateCodeId",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "rateCodeId",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "storeAndFwdFlag",
+											"type": "String"
+										},
+										"sink": {
+											"name": "storeAndFwdFlag",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "paymentType",
+											"type": "String"
+										},
+										"sink": {
+											"name": "paymentType",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "fareAmount",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "fareAmount",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "extra",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "extra",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "mtaTax",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "mtaTax",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "improvementSurcharge",
+											"type": "String"
+										},
+										"sink": {
+											"name": "improvementSurcharge",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "tipAmount",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "tipAmount",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "tollsAmount",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "tollsAmount",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "totalAmount",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "totalAmount",
+											"type": "Double"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "prateekfiles",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "hyperscaleisi",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/prateekfiles')]",
+				"[concat(variables('factoryId'), '/datasets/hyperscaleisi')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/filecheck')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1323,276 +1593,6 @@
 				"[concat(variables('factoryId'), '/pipelines/purchasing')]",
 				"[concat(variables('factoryId'), '/pipelines/Sales')]",
 				"[concat(variables('factoryId'), '/pipelines/Finalize')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/prsqldwtohyperscale')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "sqldwtohtperscaleyellowtaxi",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "ParquetSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								}
-							},
-							"sink": {
-								"type": "AzureSqlSink"
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "vendorID",
-											"type": "String"
-										},
-										"sink": {
-											"name": "vendorID",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "tpepPickupDateTime",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "tpepPickupDateTime",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"name": "tpepDropoffDateTime",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "tpepDropoffDateTime",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"name": "passengerCount",
-											"type": "Int32"
-										},
-										"sink": {
-											"name": "passengerCount",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"name": "tripDistance",
-											"type": "Double"
-										},
-										"sink": {
-											"name": "tripDistance",
-											"type": "Double"
-										}
-									},
-									{
-										"source": {
-											"name": "puLocationId",
-											"type": "String"
-										},
-										"sink": {
-											"name": "puLocationId",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "doLocationId",
-											"type": "String"
-										},
-										"sink": {
-											"name": "doLocationId",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "startLon",
-											"type": "Double"
-										},
-										"sink": {
-											"name": "startLon",
-											"type": "Double"
-										}
-									},
-									{
-										"source": {
-											"name": "startLat",
-											"type": "Double"
-										},
-										"sink": {
-											"name": "startLat",
-											"type": "Double"
-										}
-									},
-									{
-										"source": {
-											"name": "endLon",
-											"type": "Double"
-										},
-										"sink": {
-											"name": "endLon",
-											"type": "Double"
-										}
-									},
-									{
-										"source": {
-											"name": "endLat",
-											"type": "Double"
-										},
-										"sink": {
-											"name": "endLat",
-											"type": "Double"
-										}
-									},
-									{
-										"source": {
-											"name": "rateCodeId",
-											"type": "Int32"
-										},
-										"sink": {
-											"name": "rateCodeId",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"name": "storeAndFwdFlag",
-											"type": "String"
-										},
-										"sink": {
-											"name": "storeAndFwdFlag",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "paymentType",
-											"type": "String"
-										},
-										"sink": {
-											"name": "paymentType",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "fareAmount",
-											"type": "Double"
-										},
-										"sink": {
-											"name": "fareAmount",
-											"type": "Double"
-										}
-									},
-									{
-										"source": {
-											"name": "extra",
-											"type": "Double"
-										},
-										"sink": {
-											"name": "extra",
-											"type": "Double"
-										}
-									},
-									{
-										"source": {
-											"name": "mtaTax",
-											"type": "Double"
-										},
-										"sink": {
-											"name": "mtaTax",
-											"type": "Double"
-										}
-									},
-									{
-										"source": {
-											"name": "improvementSurcharge",
-											"type": "String"
-										},
-										"sink": {
-											"name": "improvementSurcharge",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "tipAmount",
-											"type": "Double"
-										},
-										"sink": {
-											"name": "tipAmount",
-											"type": "Double"
-										}
-									},
-									{
-										"source": {
-											"name": "tollsAmount",
-											"type": "Double"
-										},
-										"sink": {
-											"name": "tollsAmount",
-											"type": "Double"
-										}
-									},
-									{
-										"source": {
-											"name": "totalAmount",
-											"type": "Double"
-										},
-										"sink": {
-											"name": "totalAmount",
-											"type": "Double"
-										}
-									}
-								]
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "prateekfiles",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "hyperscaleisi",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/prateekfiles')]",
-				"[concat(variables('factoryId'), '/datasets/hyperscaleisi')]"
 			]
 		},
 		{
@@ -2975,6 +2975,45 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Json1')]",
 				"[concat(variables('factoryId'), '/datasets/csvfile')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/cpblobtohyperscale')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "prateekfiles",
+								"type": "DatasetReference"
+							},
+							"name": "prateekblob",
+							"typeProperties": {}
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "hyperscaleisi",
+								"type": "DatasetReference"
+							},
+							"name": "hyperscale"
+						}
+					],
+					"transformations": [
+						{
+							"name": "Select1"
+						}
+					],
+					"script": "source(output(\n\t\tvendorID as string,\n\t\ttpepPickupDateTime as timestamp,\n\t\ttpepDropoffDateTime as timestamp,\n\t\tpassengerCount as integer,\n\t\ttripDistance as double,\n\t\tpuLocationId as string,\n\t\tdoLocationId as string,\n\t\tstartLon as double,\n\t\tstartLat as double,\n\t\tendLon as double,\n\t\tendLat as double,\n\t\trateCodeId as integer,\n\t\tstoreAndFwdFlag as string,\n\t\tpaymentType as string,\n\t\tfareAmount as double,\n\t\textra as double,\n\t\tmtaTax as double,\n\t\timprovementSurcharge as string,\n\t\ttipAmount as double,\n\t\ttollsAmount as double,\n\t\ttotalAmount as double,\n\t\tpuYear as string,\n\t\tpuMonth as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet') ~> prateekblob\nprateekblob select(mapColumn(\n\t\tvendorID,\n\t\ttpepPickupDateTime,\n\t\ttpepDropoffDateTime,\n\t\tpassengerCount,\n\t\ttripDistance,\n\t\tpuLocationId,\n\t\tdoLocationId,\n\t\tstartLon,\n\t\tstartLat,\n\t\tendLon,\n\t\tendLat,\n\t\trateCodeId,\n\t\tstoreAndFwdFlag,\n\t\tpaymentType,\n\t\tfareAmount,\n\t\textra,\n\t\tmtaTax,\n\t\timprovementSurcharge,\n\t\ttipAmount,\n\t\ttollsAmount,\n\t\ttotalAmount,\n\t\tpuYear,\n\t\tpuMonth\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 sink(input(\n\t\tvendorID as string,\n\t\ttpepPickupDateTime as timestamp,\n\t\ttpepDropoffDateTime as timestamp,\n\t\tpassengerCount as integer,\n\t\ttripDistance as double,\n\t\tpuLocationId as string,\n\t\tdoLocationId as string,\n\t\tstartLon as double,\n\t\tstartLat as double,\n\t\tendLon as double,\n\t\tendLat as double,\n\t\trateCodeId as integer,\n\t\tstoreAndFwdFlag as string,\n\t\tpaymentType as string,\n\t\tfareAmount as double,\n\t\textra as double,\n\t\tmtaTax as double,\n\t\timprovementSurcharge as string,\n\t\ttipAmount as double,\n\t\ttollsAmount as double,\n\t\ttotalAmount as double\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tbatchSize: 10000,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> hyperscale"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/prateekfiles')]",
+				"[concat(variables('factoryId'), '/datasets/hyperscaleisi')]"
 			]
 		}
 	]
