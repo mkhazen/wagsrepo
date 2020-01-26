@@ -1,0 +1,118 @@
+{
+	"name": "hyperscaleisi",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "idisvr",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "vendorID",
+				"type": "varchar"
+			},
+			{
+				"name": "tpepPickupDateTime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "tpepDropoffDateTime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "passengerCount",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "tripDistance",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "puLocationId",
+				"type": "varchar"
+			},
+			{
+				"name": "doLocationId",
+				"type": "varchar"
+			},
+			{
+				"name": "startLon",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "startLat",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "endLon",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "endLat",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "rateCodeId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "storeAndFwdFlag",
+				"type": "varchar"
+			},
+			{
+				"name": "paymentType",
+				"type": "varchar"
+			},
+			{
+				"name": "fareAmount",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "extra",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "mtaTax",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "improvementSurcharge",
+				"type": "varchar"
+			},
+			{
+				"name": "tipAmount",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "tollsAmount",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "totalAmount",
+				"type": "float",
+				"precision": 15
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "YellowCab_Rawdata"
+		}
+	}
+}
