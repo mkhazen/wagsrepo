@@ -48,3 +48,19 @@ collection.show()
 
 import org.apache.spark.sql.SaveMode
 df.write.mode(SaveMode.Append).sqlDB(config)
+
+// COMMAND ----------
+
+val writeconfig = Config(Map(
+  "url"            -> "idisvr.database.windows.net",
+  "databaseName"   -> "idi",
+  "dbTable"        -> "dbo.YellowCab_Rawdata",
+  "user"           -> "sqladmin",
+  "password"       -> "Azure!2345678",
+  "bulkCopyBatchSize" -> "2500",
+  "bulkCopyTableLock" -> "true",
+  "bulkCopyTimeout"   -> "600"
+))
+
+import org.apache.spark.sql.SaveMode
+df.repartition(10).write.mode(SaveMode.Append).sqlDB(writeconfig)
