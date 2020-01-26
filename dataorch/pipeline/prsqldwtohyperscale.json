@@ -19,13 +19,229 @@
 						"type": "ParquetSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
-							"recursive": true
+							"recursive": true,
+							"enablePartitionDiscovery": false
 						}
 					},
 					"sink": {
 						"type": "AzureSqlSink"
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "vendorID",
+									"type": "String"
+								},
+								"sink": {
+									"name": "vendorID",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "tpepPickupDateTime",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "tpepPickupDateTime",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "tpepDropoffDateTime",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "tpepDropoffDateTime",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "passengerCount",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "passengerCount",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "tripDistance",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "tripDistance",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "puLocationId",
+									"type": "String"
+								},
+								"sink": {
+									"name": "puLocationId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "doLocationId",
+									"type": "String"
+								},
+								"sink": {
+									"name": "doLocationId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "startLon",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "startLon",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "startLat",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "startLat",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "endLon",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "endLon",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "endLat",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "endLat",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "rateCodeId",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "rateCodeId",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "storeAndFwdFlag",
+									"type": "String"
+								},
+								"sink": {
+									"name": "storeAndFwdFlag",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "paymentType",
+									"type": "String"
+								},
+								"sink": {
+									"name": "paymentType",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "fareAmount",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "fareAmount",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "extra",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "extra",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "mtaTax",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "mtaTax",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "improvementSurcharge",
+									"type": "String"
+								},
+								"sink": {
+									"name": "improvementSurcharge",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "tipAmount",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "tipAmount",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "tollsAmount",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "tollsAmount",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"name": "totalAmount",
+									"type": "Double"
+								},
+								"sink": {
+									"name": "totalAmount",
+									"type": "Double"
+								}
+							}
+						]
+					}
 				},
 				"inputs": [
 					{
