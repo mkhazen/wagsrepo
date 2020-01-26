@@ -16,6 +16,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
 		},
+		"AzureBlobStorage2_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage2'"
+		},
 		"AzureDataLakeStorage1_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
@@ -28,6 +32,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'etlADF'"
 		},
+		"idisvr_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'idisvr'"
+		},
 		"runnotebook_accessToken": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'runnotebook'"
@@ -35,14 +43,6 @@
 		"wagsADB_accessToken": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'wagsADB'"
-		},
-		"AzureBlobStorage2_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage2'"
-		},
-		"idisvr_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'idisvr'"
 		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"type": "string",
@@ -62,6 +62,19 @@
 				"type": "AzureBlobStorage",
 				"typeProperties": {
 					"connectionString": "[parameters('AzureBlobStorage1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage2')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureBlobStorage2_connectionString')]"
 				}
 			},
 			"dependsOn": []
@@ -110,6 +123,19 @@
 						"value": "[parameters('etlADF_accessToken')]"
 					},
 					"existingClusterId": "1205-140903-isles770"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/idisvr')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('idisvr_connectionString')]"
 				}
 			},
 			"dependsOn": []
@@ -168,32 +194,6 @@
 				"type": "SelfHosted",
 				"description": "Vm for machine learning.",
 				"typeProperties": {}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage2')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('AzureBlobStorage2_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/idisvr')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('idisvr_connectionString')]"
-				}
 			},
 			"dependsOn": []
 		},
@@ -894,6 +894,129 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/hyperscaleisi')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "idisvr",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "vendorID",
+						"type": "varchar"
+					},
+					{
+						"name": "tpepPickupDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "tpepDropoffDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "passengerCount",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "tripDistance",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "puLocationId",
+						"type": "varchar"
+					},
+					{
+						"name": "doLocationId",
+						"type": "varchar"
+					},
+					{
+						"name": "startLon",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "startLat",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "endLon",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "endLat",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "rateCodeId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "storeAndFwdFlag",
+						"type": "varchar"
+					},
+					{
+						"name": "paymentType",
+						"type": "varchar"
+					},
+					{
+						"name": "fareAmount",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "extra",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "mtaTax",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "improvementSurcharge",
+						"type": "varchar"
+					},
+					{
+						"name": "tipAmount",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "tollsAmount",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "totalAmount",
+						"type": "float",
+						"precision": 15
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "YellowCab_Rawdata"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/idisvr')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/incomingTrain')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -949,34 +1072,6 @@
 						"type": "String"
 					}
 				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/purchasingfinal')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureDataLakeStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"folderPath": "purchasing",
-						"fileSystem": "final"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"

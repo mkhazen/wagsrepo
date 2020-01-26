@@ -16,6 +16,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
 		},
+		"AzureBlobStorage2_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage2'"
+		},
 		"AzureDataLakeStorage1_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
@@ -32,6 +36,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'etlADF'"
 		},
+		"idisvr_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'idisvr'"
+		},
 		"runnotebook_accessToken": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'runnotebook'"
@@ -39,14 +47,6 @@
 		"wagsADB_accessToken": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'wagsADB'"
-		},
-		"AzureBlobStorage2_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage2'"
-		},
-		"idisvr_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'idisvr'"
 		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"type": "string",
@@ -1326,6 +1326,276 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/prsqldwtohyperscale')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "sqldwtohtperscaleyellowtaxi",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ParquetSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "vendorID",
+											"type": "String"
+										},
+										"sink": {
+											"name": "vendorID",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "tpepPickupDateTime",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "tpepPickupDateTime",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "tpepDropoffDateTime",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "tpepDropoffDateTime",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "passengerCount",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "passengerCount",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "tripDistance",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "tripDistance",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "puLocationId",
+											"type": "String"
+										},
+										"sink": {
+											"name": "puLocationId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "doLocationId",
+											"type": "String"
+										},
+										"sink": {
+											"name": "doLocationId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "startLon",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "startLon",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "startLat",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "startLat",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "endLon",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "endLon",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "endLat",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "endLat",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "rateCodeId",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "rateCodeId",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "storeAndFwdFlag",
+											"type": "String"
+										},
+										"sink": {
+											"name": "storeAndFwdFlag",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "paymentType",
+											"type": "String"
+										},
+										"sink": {
+											"name": "paymentType",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "fareAmount",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "fareAmount",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "extra",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "extra",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "mtaTax",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "mtaTax",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "improvementSurcharge",
+											"type": "String"
+										},
+										"sink": {
+											"name": "improvementSurcharge",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "tipAmount",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "tipAmount",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "tollsAmount",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "tollsAmount",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "totalAmount",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "totalAmount",
+											"type": "Double"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "prateekfiles",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "hyperscaleisi",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/prateekfiles')]",
+				"[concat(variables('factoryId'), '/datasets/hyperscaleisi')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/purchasing')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1760,6 +2030,129 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/hyperscaleisi')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "idisvr",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "vendorID",
+						"type": "varchar"
+					},
+					{
+						"name": "tpepPickupDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "tpepDropoffDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "passengerCount",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "tripDistance",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "puLocationId",
+						"type": "varchar"
+					},
+					{
+						"name": "doLocationId",
+						"type": "varchar"
+					},
+					{
+						"name": "startLon",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "startLat",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "endLon",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "endLat",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "rateCodeId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "storeAndFwdFlag",
+						"type": "varchar"
+					},
+					{
+						"name": "paymentType",
+						"type": "varchar"
+					},
+					{
+						"name": "fareAmount",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "extra",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "mtaTax",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "improvementSurcharge",
+						"type": "varchar"
+					},
+					{
+						"name": "tipAmount",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "tollsAmount",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "totalAmount",
+						"type": "float",
+						"precision": 15
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "YellowCab_Rawdata"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/idisvr')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/incomingTrain')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1818,6 +2211,125 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/prateekfiles')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "*",
+						"folderPath": "nyctlc/yellow",
+						"container": "sampledatasets"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "vendorID",
+						"type": "UTF8"
+					},
+					{
+						"name": "tpepPickupDateTime",
+						"type": "INT96"
+					},
+					{
+						"name": "tpepDropoffDateTime",
+						"type": "INT96"
+					},
+					{
+						"name": "passengerCount",
+						"type": "INT32"
+					},
+					{
+						"name": "tripDistance",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "puLocationId",
+						"type": "UTF8"
+					},
+					{
+						"name": "doLocationId",
+						"type": "UTF8"
+					},
+					{
+						"name": "startLon",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "startLat",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "endLon",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "endLat",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "rateCodeId",
+						"type": "INT32"
+					},
+					{
+						"name": "storeAndFwdFlag",
+						"type": "UTF8"
+					},
+					{
+						"name": "paymentType",
+						"type": "UTF8"
+					},
+					{
+						"name": "fareAmount",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "extra",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "mtaTax",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "improvementSurcharge",
+						"type": "UTF8"
+					},
+					{
+						"name": "tipAmount",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "tollsAmount",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "totalAmount",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "puYear",
+						"type": "UTF8"
+					},
+					{
+						"name": "puMonth",
+						"type": "UTF8"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage2')]"
 			]
 		},
 		{
@@ -2230,6 +2742,19 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage2')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureBlobStorage2_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage1')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -2297,6 +2822,19 @@
 						"value": "[parameters('etlADF_accessToken')]"
 					},
 					"existingClusterId": "1205-140903-isles770"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/idisvr')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('idisvr_connectionString')]"
 				}
 			},
 			"dependsOn": []
@@ -2437,327 +2975,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Json1')]",
 				"[concat(variables('factoryId'), '/datasets/csvfile')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/prsqldwtohyperscale')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "sqldwtohtperscaleyellowtaxi",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "ParquetSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true
-								}
-							},
-							"sink": {
-								"type": "AzureSqlSink"
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "prateekfiles",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "hyperscaleisi",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/prateekfiles')]",
-				"[concat(variables('factoryId'), '/datasets/hyperscaleisi')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage2')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('AzureBlobStorage2_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/prateekfiles')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage2",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": "nyctlc/yellow",
-						"container": "sampledatasets"
-					},
-					"compressionCodec": "snappy"
-				},
-				"schema": [
-					{
-						"name": "vendorID",
-						"type": "UTF8"
-					},
-					{
-						"name": "tpepPickupDateTime",
-						"type": "INT96"
-					},
-					{
-						"name": "tpepDropoffDateTime",
-						"type": "INT96"
-					},
-					{
-						"name": "passengerCount",
-						"type": "INT32"
-					},
-					{
-						"name": "tripDistance",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "puLocationId",
-						"type": "UTF8"
-					},
-					{
-						"name": "doLocationId",
-						"type": "UTF8"
-					},
-					{
-						"name": "startLon",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "startLat",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "endLon",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "endLat",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "rateCodeId",
-						"type": "INT32"
-					},
-					{
-						"name": "storeAndFwdFlag",
-						"type": "UTF8"
-					},
-					{
-						"name": "paymentType",
-						"type": "UTF8"
-					},
-					{
-						"name": "fareAmount",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "extra",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "mtaTax",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "improvementSurcharge",
-						"type": "UTF8"
-					},
-					{
-						"name": "tipAmount",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "tollsAmount",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "totalAmount",
-						"type": "DOUBLE"
-					},
-					{
-						"name": "puYear",
-						"type": "UTF8"
-					},
-					{
-						"name": "puMonth",
-						"type": "UTF8"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage2')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/idisvr')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('idisvr_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/hyperscaleisi')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "idisvr",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "vendorID",
-						"type": "varchar"
-					},
-					{
-						"name": "tpepPickupDateTime",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "tpepDropoffDateTime",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "passengerCount",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "tripDistance",
-						"type": "float",
-						"precision": 15
-					},
-					{
-						"name": "puLocationId",
-						"type": "varchar"
-					},
-					{
-						"name": "doLocationId",
-						"type": "varchar"
-					},
-					{
-						"name": "startLon",
-						"type": "float",
-						"precision": 15
-					},
-					{
-						"name": "startLat",
-						"type": "float",
-						"precision": 15
-					},
-					{
-						"name": "endLon",
-						"type": "float",
-						"precision": 15
-					},
-					{
-						"name": "endLat",
-						"type": "float",
-						"precision": 15
-					},
-					{
-						"name": "rateCodeId",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "storeAndFwdFlag",
-						"type": "varchar"
-					},
-					{
-						"name": "paymentType",
-						"type": "varchar"
-					},
-					{
-						"name": "fareAmount",
-						"type": "float",
-						"precision": 15
-					},
-					{
-						"name": "extra",
-						"type": "float",
-						"precision": 15
-					},
-					{
-						"name": "mtaTax",
-						"type": "float",
-						"precision": 15
-					},
-					{
-						"name": "improvementSurcharge",
-						"type": "varchar"
-					},
-					{
-						"name": "tipAmount",
-						"type": "float",
-						"precision": 15
-					},
-					{
-						"name": "tollsAmount",
-						"type": "float",
-						"precision": 15
-					},
-					{
-						"name": "totalAmount",
-						"type": "float",
-						"precision": 15
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "YellowCab_Rawdata"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/idisvr')]"
 			]
 		}
 	]

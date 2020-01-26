@@ -16,6 +16,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
 		},
+		"AzureBlobStorage2_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage2'"
+		},
 		"AzureDataLakeStorage1_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
@@ -32,6 +36,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'etlADF'"
 		},
+		"idisvr_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'idisvr'"
+		},
 		"runnotebook_accessToken": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'runnotebook'"
@@ -39,14 +47,6 @@
 		"wagsADB_accessToken": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'wagsADB'"
-		},
-		"AzureBlobStorage2_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage2'"
-		},
-		"idisvr_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'idisvr'"
 		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"type": "string",
@@ -93,6 +93,9 @@
 					"AzureBlobStorage1_connectionString": {
 						"value": "[parameters('AzureBlobStorage1_connectionString')]"
 					},
+					"AzureBlobStorage2_connectionString": {
+						"value": "[parameters('AzureBlobStorage2_connectionString')]"
+					},
 					"AzureDataLakeStorage1_accountKey": {
 						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
 					},
@@ -102,17 +105,14 @@
 					"etlADF_accessToken": {
 						"value": "[parameters('etlADF_accessToken')]"
 					},
+					"idisvr_connectionString": {
+						"value": "[parameters('idisvr_connectionString')]"
+					},
 					"runnotebook_accessToken": {
 						"value": "[parameters('runnotebook_accessToken')]"
 					},
 					"wagsADB_accessToken": {
 						"value": "[parameters('wagsADB_accessToken')]"
-					},
-					"AzureBlobStorage2_connectionString": {
-						"value": "[parameters('AzureBlobStorage2_connectionString')]"
-					},
-					"idisvr_connectionString": {
-						"value": "[parameters('idisvr_connectionString')]"
 					},
 					"AzureDataLakeStorage1_properties_typeProperties_url": {
 						"value": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]"
