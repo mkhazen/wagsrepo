@@ -29,6 +29,12 @@
 		"wagsADB_accessToken": {
 			"value": ""
 		},
+		"AzureBlobStorage2_connectionString": {
+			"value": ""
+		},
+		"idisvr_connectionString": {
+			"value": ""
+		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"value": "https://waginput.dfs.core.windows.net"
 		},

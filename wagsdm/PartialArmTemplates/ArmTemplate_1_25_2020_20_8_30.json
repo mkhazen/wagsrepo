@@ -1,0 +1,305 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "wagsdm"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/prsqldwtohyperscale')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "sqldwtohtperscaleyellowtaxi",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ParquetSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink"
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "prateekfiles",
+								"type": "DatasetReference"
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "hyperscaleisi",
+								"type": "DatasetReference"
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/prateekfiles')]",
+				"[concat(variables('factoryId'), '/datasets/hyperscaleisi')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/prateekfiles')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "nyctlc/yellow",
+						"container": "sampledatasets"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "vendorID",
+						"type": "UTF8"
+					},
+					{
+						"name": "tpepPickupDateTime",
+						"type": "INT96"
+					},
+					{
+						"name": "tpepDropoffDateTime",
+						"type": "INT96"
+					},
+					{
+						"name": "passengerCount",
+						"type": "INT32"
+					},
+					{
+						"name": "tripDistance",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "puLocationId",
+						"type": "UTF8"
+					},
+					{
+						"name": "doLocationId",
+						"type": "UTF8"
+					},
+					{
+						"name": "startLon",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "startLat",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "endLon",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "endLat",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "rateCodeId",
+						"type": "INT32"
+					},
+					{
+						"name": "storeAndFwdFlag",
+						"type": "UTF8"
+					},
+					{
+						"name": "paymentType",
+						"type": "UTF8"
+					},
+					{
+						"name": "fareAmount",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "extra",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "mtaTax",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "improvementSurcharge",
+						"type": "UTF8"
+					},
+					{
+						"name": "tipAmount",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "tollsAmount",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "totalAmount",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "puYear",
+						"type": "UTF8"
+					},
+					{
+						"name": "puMonth",
+						"type": "UTF8"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/hyperscaleisi')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "idisvr",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "vendorID",
+						"type": "varchar"
+					},
+					{
+						"name": "tpepPickupDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "tpepDropoffDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "passengerCount",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "tripDistance",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "puLocationId",
+						"type": "varchar"
+					},
+					{
+						"name": "doLocationId",
+						"type": "varchar"
+					},
+					{
+						"name": "startLon",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "startLat",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "endLon",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "endLat",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "rateCodeId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "storeAndFwdFlag",
+						"type": "varchar"
+					},
+					{
+						"name": "paymentType",
+						"type": "varchar"
+					},
+					{
+						"name": "fareAmount",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "extra",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "mtaTax",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "improvementSurcharge",
+						"type": "varchar"
+					},
+					{
+						"name": "tipAmount",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "tollsAmount",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "totalAmount",
+						"type": "float",
+						"precision": 15
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "YellowCab_Rawdata"
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

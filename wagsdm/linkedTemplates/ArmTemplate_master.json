@@ -40,6 +40,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'wagsADB'"
 		},
+		"AzureBlobStorage2_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage2'"
+		},
+		"idisvr_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'idisvr'"
+		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://waginput.dfs.core.windows.net"
@@ -99,6 +107,12 @@
 					},
 					"wagsADB_accessToken": {
 						"value": "[parameters('wagsADB_accessToken')]"
+					},
+					"AzureBlobStorage2_connectionString": {
+						"value": "[parameters('AzureBlobStorage2_connectionString')]"
+					},
+					"idisvr_connectionString": {
+						"value": "[parameters('idisvr_connectionString')]"
 					},
 					"AzureDataLakeStorage1_properties_typeProperties_url": {
 						"value": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]"
