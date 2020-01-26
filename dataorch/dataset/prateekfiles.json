@@ -10,7 +10,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "*",
 				"folderPath": "nyctlc/yellow",
 				"container": "sampledatasets"
 			},
