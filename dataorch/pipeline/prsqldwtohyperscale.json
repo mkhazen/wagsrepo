@@ -21,7 +21,7 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
 							"enablePartitionDiscovery": false,
-							"prefix": ""
+							"prefix": "*"
 						}
 					},
 					"sink": {
