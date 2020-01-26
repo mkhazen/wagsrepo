@@ -3015,6 +3015,48 @@
 				"[concat(variables('factoryId'), '/datasets/prateekfiles')]",
 				"[concat(variables('factoryId'), '/datasets/hyperscaleisi')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/cphyper')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "cpblobtohyperscale",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "cpblobtohyperscale",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"prateekblob": {},
+									"hyperscale": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							}
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/cpblobtohyperscale')]"
+			]
 		}
 	]
 }
