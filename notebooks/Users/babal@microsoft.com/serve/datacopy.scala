@@ -31,10 +31,26 @@ df.count
 
 // COMMAND ----------
 
+val dfvendor = df.select($"vendorID").distinct().show(100)
+
+// COMMAND ----------
+
+val df1 = df.withColumn("Date", (col("tpepPickupDateTime").cast("date")))
+
+// COMMAND ----------
+
+val df2 = df1.withColumn("year", year(col("date"))) .withColumn("month", month(col("date"))) .withColumn("day", dayofmonth(col("date"))) .withColumn("hour", hour(col("date")))
+
+// COMMAND ----------
+
+val df3 = df2.groupBy("year","month").agg(sum("fareAmount").alias("Total"),count("vendorID").alias("Count")).sort(asc("year"), asc("month"))
+
+// COMMAND ----------
+
 val config = Config(Map(
   "url"            -> "idisvr.database.windows.net",
   "databaseName"   -> "idi",
-  "dbTable"        -> "dbo.YellowCab_Rawdata",
+  "dbTable"        -> "dbo.aggrdata",
   "user"           -> "sqladmin",
   "password"       -> "Azure!2345678",
   "connectTimeout" -> "5", //seconds
@@ -47,20 +63,19 @@ collection.show()
 // COMMAND ----------
 
 import org.apache.spark.sql.SaveMode
-df.write.mode(SaveMode.Append).sqlDB(config)
+df3.write.mode(SaveMode.Append).sqlDB(config)
 
 // COMMAND ----------
 
 val writeconfig = Config(Map(
   "url"            -> "idisvr.database.windows.net",
   "databaseName"   -> "idi",
-  "dbTable"        -> "dbo.YellowCab_Rawdata",
+  "dbTable"        -> "dbo.aggrdata",
   "user"           -> "sqladmin",
   "password"       -> "Azure!2345678",
-  "bulkCopyBatchSize" -> "2500",
-  "bulkCopyTableLock" -> "true",
-  "bulkCopyTimeout"   -> "600"
+  "connectTimeout" -> "10", //seconds
+  "queryTimeout"   -> "60"  //seconds
 ))
 
 import org.apache.spark.sql.SaveMode
-df.repartition(10).write.mode(SaveMode.Append).sqlDB(writeconfig)
+//df3.repartition(10).write.mode(SaveMode.Append).sqlDB(writeconfig)
