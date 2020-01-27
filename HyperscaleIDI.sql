@@ -273,3 +273,12 @@ create index idx_sc_product_history_dim on sc_product_history_dim (product_key,p
 
 create index idx_sc_stock_movement_trx_fct on sc_stock_movement_trx_fct (location_key,location_code,location_type,product_key,product_code)
 
+create table aggrdata
+(
+    year int,
+    month int,
+    total float,
+    count int
+);
+
+select top 200 * from aggrdata;
