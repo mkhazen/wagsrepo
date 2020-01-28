@@ -26,6 +26,9 @@
 		"etlADF_accessToken": {
 			"value": ""
 		},
+		"idicdm_connectionString": {
+			"value": ""
+		},
 		"idisvr_connectionString": {
 			"value": ""
 		},

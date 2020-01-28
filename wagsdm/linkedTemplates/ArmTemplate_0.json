@@ -32,6 +32,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'etlADF'"
 		},
+		"idicdm_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'idicdm'"
+		},
 		"idisvr_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'idisvr'"
@@ -123,6 +127,19 @@
 						"value": "[parameters('etlADF_accessToken')]"
 					},
 					"existingClusterId": "1205-140903-isles770"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/idicdm')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": "[parameters('idicdm_connectionString')]"
 				}
 			},
 			"dependsOn": []
@@ -894,187 +911,129 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/hyperscaleisi')]",
+			"name": "[concat(parameters('factoryName'), '/greentaxi')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "idisvr",
+					"referenceName": "AzureBlobStorage1",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
-				"type": "AzureSqlTable",
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "nyctlc/green",
+						"container": "opendataset"
+					},
+					"compressionCodec": "snappy"
+				},
 				"schema": [
 					{
 						"name": "vendorID",
-						"type": "varchar"
+						"type": "INT32"
 					},
 					{
-						"name": "tpepPickupDateTime",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
+						"name": "lpepPickupDatetime",
+						"type": "INT96"
 					},
 					{
-						"name": "tpepDropoffDateTime",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
+						"name": "lpepDropoffDatetime",
+						"type": "INT96"
 					},
 					{
 						"name": "passengerCount",
-						"type": "int",
-						"precision": 10
+						"type": "INT32"
 					},
 					{
 						"name": "tripDistance",
-						"type": "float",
-						"precision": 15
+						"type": "DOUBLE"
 					},
 					{
 						"name": "puLocationId",
-						"type": "varchar"
+						"type": "UTF8"
 					},
 					{
 						"name": "doLocationId",
-						"type": "varchar"
+						"type": "UTF8"
 					},
 					{
-						"name": "startLon",
-						"type": "float",
-						"precision": 15
+						"name": "pickupLongitude",
+						"type": "DOUBLE"
 					},
 					{
-						"name": "startLat",
-						"type": "float",
-						"precision": 15
+						"name": "pickupLatitude",
+						"type": "DOUBLE"
 					},
 					{
-						"name": "endLon",
-						"type": "float",
-						"precision": 15
+						"name": "dropoffLongitude",
+						"type": "DOUBLE"
 					},
 					{
-						"name": "endLat",
-						"type": "float",
-						"precision": 15
+						"name": "dropoffLatitude",
+						"type": "DOUBLE"
 					},
 					{
-						"name": "rateCodeId",
-						"type": "int",
-						"precision": 10
+						"name": "rateCodeID",
+						"type": "INT32"
 					},
 					{
 						"name": "storeAndFwdFlag",
-						"type": "varchar"
+						"type": "UTF8"
 					},
 					{
 						"name": "paymentType",
-						"type": "varchar"
+						"type": "INT32"
 					},
 					{
 						"name": "fareAmount",
-						"type": "float",
-						"precision": 15
+						"type": "DOUBLE"
 					},
 					{
 						"name": "extra",
-						"type": "float",
-						"precision": 15
+						"type": "DOUBLE"
 					},
 					{
 						"name": "mtaTax",
-						"type": "float",
-						"precision": 15
+						"type": "DOUBLE"
 					},
 					{
 						"name": "improvementSurcharge",
-						"type": "varchar"
+						"type": "UTF8"
 					},
 					{
 						"name": "tipAmount",
-						"type": "float",
-						"precision": 15
+						"type": "DOUBLE"
 					},
 					{
 						"name": "tollsAmount",
-						"type": "float",
-						"precision": 15
+						"type": "DOUBLE"
+					},
+					{
+						"name": "ehailFee",
+						"type": "DOUBLE"
 					},
 					{
 						"name": "totalAmount",
-						"type": "float",
-						"precision": 15
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "YellowCab_Rawdata"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/idisvr')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/incomingTrain')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureDataLakeStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "train.csv",
-						"fileSystem": "incoming"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "key",
-						"type": "String"
+						"type": "DOUBLE"
 					},
 					{
-						"name": "fare_amount",
-						"type": "String"
+						"name": "tripType",
+						"type": "INT32"
 					},
 					{
-						"name": "pickup_datetime",
-						"type": "String"
+						"name": "puYear",
+						"type": "UTF8"
 					},
 					{
-						"name": "pickup_longitude",
-						"type": "String"
-					},
-					{
-						"name": "pickup_latitude",
-						"type": "String"
-					},
-					{
-						"name": "dropoff_longitude",
-						"type": "String"
-					},
-					{
-						"name": "dropoff_latitude",
-						"type": "String"
-					},
-					{
-						"name": "passenger_count",
-						"type": "String"
+						"name": "puMonth",
+						"type": "UTF8"
 					}
 				]
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
 			]
 		}
 	]

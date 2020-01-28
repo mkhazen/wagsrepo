@@ -13,6 +13,417 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/jsoninput')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "Json1",
+								"type": "DatasetReference"
+							},
+							"name": "jsoninput",
+							"typeProperties": {}
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "csvfile",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "DerivedColumn1"
+						},
+						{
+							"name": "Select1"
+						}
+					],
+					"script": "source(output(\n\t\tactors as (name as string)[],\n\t\tavailabilityDate as string,\n\t\tgenre as string,\n\t\trating as string,\n\t\treleaseYear as string,\n\t\truntime as string,\n\t\tstreamingAvailabilityDate as string,\n\t\ttier as string,\n\t\ttitle as string,\n\t\tid as string,\n\t\t{_rid} as string,\n\t\t{_self} as string,\n\t\t{_etag} as string,\n\t\t{_attachments} as string,\n\t\t{_ts} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> jsoninput\njsoninput derive(actors = map(actors,#item)) ~> DerivedColumn1\nDerivedColumn1 select(mapColumn(\n\t\tactors,\n\t\tavailabilityDate,\n\t\tgenre,\n\t\trating,\n\t\treleaseYear,\n\t\truntime,\n\t\tstreamingAvailabilityDate,\n\t\ttier,\n\t\ttitle,\n\t\tid,\n\t\t{_rid},\n\t\t{_self},\n\t\t{_etag},\n\t\t{_attachments},\n\t\t{_ts}\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/taxiblobsqldw')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "opendataset",
+								"type": "DatasetReference"
+							},
+							"name": "taxidata",
+							"typeProperties": {}
+						},
+						{
+							"dataset": {
+								"referenceName": "greentaxi",
+								"type": "DatasetReference"
+							},
+							"name": "taxigreen",
+							"typeProperties": {}
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "idicdmyellow",
+								"type": "DatasetReference"
+							},
+							"name": "idicdm"
+						},
+						{
+							"dataset": {
+								"referenceName": "greentaxids",
+								"type": "DatasetReference"
+							},
+							"name": "idicdmgreen"
+						}
+					],
+					"transformations": [
+						{
+							"name": "Select1"
+						},
+						{
+							"name": "Select2"
+						}
+					],
+					"script": "source(output(\n\t\tvendorID as string,\n\t\ttpepPickupDateTime as timestamp,\n\t\ttpepDropoffDateTime as timestamp,\n\t\tpassengerCount as integer,\n\t\ttripDistance as double,\n\t\tpuLocationId as string,\n\t\tdoLocationId as string,\n\t\tstartLon as double,\n\t\tstartLat as double,\n\t\tendLon as double,\n\t\tendLat as double,\n\t\trateCodeId as integer,\n\t\tstoreAndFwdFlag as string,\n\t\tpaymentType as string,\n\t\tfareAmount as double,\n\t\textra as double,\n\t\tmtaTax as double,\n\t\timprovementSurcharge as string,\n\t\ttipAmount as double,\n\t\ttollsAmount as double,\n\t\ttotalAmount as double,\n\t\tpuYear as string,\n\t\tpuMonth as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet') ~> taxidata\nsource(output(\n\t\tvendorID as integer,\n\t\tlpepPickupDatetime as timestamp,\n\t\tlpepDropoffDatetime as timestamp,\n\t\tpassengerCount as integer,\n\t\ttripDistance as double,\n\t\tpuLocationId as string,\n\t\tdoLocationId as string,\n\t\tpickupLongitude as double,\n\t\tpickupLatitude as double,\n\t\tdropoffLongitude as double,\n\t\tdropoffLatitude as double,\n\t\trateCodeID as integer,\n\t\tstoreAndFwdFlag as string,\n\t\tpaymentType as integer,\n\t\tfareAmount as double,\n\t\textra as double,\n\t\tmtaTax as double,\n\t\timprovementSurcharge as string,\n\t\ttipAmount as double,\n\t\ttollsAmount as double,\n\t\tehailFee as double,\n\t\ttotalAmount as double,\n\t\ttripType as integer,\n\t\tpuYear as string,\n\t\tpuMonth as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet') ~> taxigreen\ntaxidata select(mapColumn(\n\t\tvendorID,\n\t\ttpepPickupDateTime,\n\t\ttpepDropoffDateTime,\n\t\tpassengerCount,\n\t\ttripDistance,\n\t\tpuLocationId,\n\t\tdoLocationId,\n\t\tstartLon,\n\t\tstartLat,\n\t\tendLon,\n\t\tendLat,\n\t\trateCodeId,\n\t\tstoreAndFwdFlag,\n\t\tpaymentType,\n\t\tfareAmount,\n\t\textra,\n\t\tmtaTax,\n\t\timprovementSurcharge,\n\t\ttipAmount,\n\t\ttollsAmount,\n\t\ttotalAmount,\n\t\tpuYear,\n\t\tpuMonth\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\ntaxigreen select(mapColumn(\n\t\tvendorID,\n\t\tlpepPickupDatetime,\n\t\tlpepDropoffDatetime,\n\t\tpassengerCount,\n\t\ttripDistance,\n\t\tpuLocationId,\n\t\tdoLocationId,\n\t\tpickupLongitude,\n\t\tpickupLatitude,\n\t\tdropoffLongitude,\n\t\tdropoffLatitude,\n\t\trateCodeID,\n\t\tstoreAndFwdFlag,\n\t\tpaymentType,\n\t\tfareAmount,\n\t\textra,\n\t\tmtaTax,\n\t\timprovementSurcharge,\n\t\ttipAmount,\n\t\ttollsAmount,\n\t\tehailFee,\n\t\ttotalAmount,\n\t\ttripType,\n\t\tpuYear,\n\t\tpuMonth\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select2\nSelect1 sink(input(\n\t\tvendorID as string,\n\t\ttpepPickupDateTime as timestamp,\n\t\ttpepDropoffDateTime as timestamp,\n\t\tpassengerCount as integer,\n\t\ttripDistance as double,\n\t\tpuLocationId as string,\n\t\tdoLocationId as string,\n\t\tstartLon as double,\n\t\tstartLat as double,\n\t\tendLon as double,\n\t\tendLat as double,\n\t\trateCodeId as integer,\n\t\tstoreAndFwdFlag as string,\n\t\tpaymentType as string,\n\t\tfareAmount as double,\n\t\textra as double,\n\t\tmtaTax as double,\n\t\timprovementSurcharge as string,\n\t\ttipAmount as double,\n\t\ttollsAmount as double,\n\t\ttotalAmount as double\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: true,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> idicdm\nSelect2 sink(input(\n\t\tvendorID as integer,\n\t\tlpepPickupDatetime as timestamp,\n\t\tlpepDropoffDatetime as timestamp,\n\t\tpassengerCount as integer,\n\t\ttripDistance as double,\n\t\tpuLocationId as string,\n\t\tdoLocationId as string,\n\t\tpickupLongitude as double,\n\t\tpickupLatitude as double,\n\t\tdropoffLongitude as double,\n\t\tdropoffLatitude as double,\n\t\trateCodeID as integer,\n\t\tstoreAndFwdFlag as string,\n\t\tpaymentType as integer,\n\t\tfareAmount as double,\n\t\textra as double,\n\t\tmtaTax as double,\n\t\timprovementSurcharge as string,\n\t\ttipAmount as double,\n\t\ttollsAmount as double,\n\t\tehailFee as double,\n\t\ttotalAmount as double,\n\t\ttripType as integer,\n\t\tpuYear as integer,\n\t\tpuMonth as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: true,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> idicdmgreen"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ADBNotebookRun')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "wagsscm",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "OnPrem to Blob",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/babal@microsoft.com/SCM/test1scala"
+						},
+						"linkedServiceName": {
+							"referenceName": "wagsADB",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "OnPrem to Blob",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "createBatchID",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "FileServerReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "key",
+											"type": "String"
+										},
+										"sink": {
+											"name": "key",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "pickup_datetime",
+											"type": "String"
+										},
+										"sink": {
+											"name": "pickup_datetime",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "pickup_longitude",
+											"type": "String"
+										},
+										"sink": {
+											"name": "pickup_longitude",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "pickup_latitude",
+											"type": "String"
+										},
+										"sink": {
+											"name": "pickup_latitude",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "dropoff_longitude",
+											"type": "String"
+										},
+										"sink": {
+											"name": "dropoff_longitude",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "dropoff_latitude",
+											"type": "String"
+										},
+										"sink": {
+											"name": "dropoff_latitude",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "passenger_count",
+											"type": "String"
+										},
+										"sink": {
+											"name": "passenger_count",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DelimitedText1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DelimitedText2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "closebatch",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "wagsscm",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[closebatch]",
+							"storedProcedureParameters": {
+								"batchid": {
+									"value": {
+										"value": "@activity('createBatchID').output.firstRow.batchid",
+										"type": "Expression"
+									},
+									"type": "Int32"
+								},
+								"enddatetime": {
+									"value": {
+										"value": "@utcnow()",
+										"type": "Expression"
+									},
+									"type": "DateTime"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "AzureSQlETL",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "createBatchID",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[createbatch]"
+							},
+							"dataset": {
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DFExecute')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "RunCopyBatch",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow1",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"incomingraw": {},
+									"rawtrain": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							}
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/cphyper')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "cpblobtohyperscale",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.00:10:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "cpblobtohyperscale",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"waginput": {},
+									"hyperscale": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							}
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/jsoninputpipeine')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -50,7 +461,9 @@
 				],
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/jsoninput')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/mainpipeline-par')]",
@@ -233,6 +646,56 @@
 				"annotations": []
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/taxiblobsqldw')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "taxiblobsqldw",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "taxiblobsqldw",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"taxidata": {},
+									"taxigreen": {},
+									"idicdm": {},
+									"idicdmgreen": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "AzureBlobStorage1",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "staging"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							}
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/taxiblobsqldw')]"
+			]
 		}
 	]
 }

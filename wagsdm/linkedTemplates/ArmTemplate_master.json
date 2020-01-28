@@ -36,6 +36,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'etlADF'"
 		},
+		"idicdm_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'idicdm'"
+		},
 		"idisvr_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'idisvr'"
@@ -104,6 +108,9 @@
 					},
 					"etlADF_accessToken": {
 						"value": "[parameters('etlADF_accessToken')]"
+					},
+					"idicdm_connectionString": {
+						"value": "[parameters('idicdm_connectionString')]"
 					},
 					"idisvr_connectionString": {
 						"value": "[parameters('idisvr_connectionString')]"
