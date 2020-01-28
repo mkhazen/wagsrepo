@@ -1,0 +1,140 @@
+{
+	"name": "greentaxids",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "idicdm",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "vendorID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "lpepPickupDatetime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "lpepDropoffDatetime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "passengerCount",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "tripDistance",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "puLocationId",
+				"type": "varchar"
+			},
+			{
+				"name": "doLocationId",
+				"type": "varchar"
+			},
+			{
+				"name": "pickupLongitude",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "pickupLatitude",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "dropoffLongitude",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "dropoffLatitude",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "rateCodeID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "storeAndFwdFlag",
+				"type": "varchar"
+			},
+			{
+				"name": "paymentType",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "fareAmount",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "extra",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "mtaTax",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "improvementSurcharge",
+				"type": "varchar"
+			},
+			{
+				"name": "tipAmount",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "tollsAmount",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "ehailFee",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "totalAmount",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "tripType",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "puYear",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "puMonth",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "GreenCab_RawData"
+		}
+	}
+}
