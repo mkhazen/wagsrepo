@@ -364,3 +364,8 @@ select top 200 * from dbo.YellowCab_Rawdata
 
 CREATE MASTER KEY ENCRYPTION BY PASSWORD = '23987hxJ#KL95234nl0zBe';
 GO
+
+
+select top 50000 * from [dbo].[T_2125710e8ebd4a1b92291508d4fa56c6]
+
+select count(*) from [dbo].[T_2125710e8ebd4a1b92291508d4fa56c6]
