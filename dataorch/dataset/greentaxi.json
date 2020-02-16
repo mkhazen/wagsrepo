@@ -1,0 +1,121 @@
+{
+	"name": "greentaxi",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "nyctlc/green",
+				"container": "opendataset"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "vendorID",
+				"type": "INT32"
+			},
+			{
+				"name": "lpepPickupDatetime",
+				"type": "INT96"
+			},
+			{
+				"name": "lpepDropoffDatetime",
+				"type": "INT96"
+			},
+			{
+				"name": "passengerCount",
+				"type": "INT32"
+			},
+			{
+				"name": "tripDistance",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "puLocationId",
+				"type": "UTF8"
+			},
+			{
+				"name": "doLocationId",
+				"type": "UTF8"
+			},
+			{
+				"name": "pickupLongitude",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "pickupLatitude",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "dropoffLongitude",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "dropoffLatitude",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "rateCodeID",
+				"type": "INT32"
+			},
+			{
+				"name": "storeAndFwdFlag",
+				"type": "UTF8"
+			},
+			{
+				"name": "paymentType",
+				"type": "INT32"
+			},
+			{
+				"name": "fareAmount",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "extra",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "mtaTax",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "improvementSurcharge",
+				"type": "UTF8"
+			},
+			{
+				"name": "tipAmount",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "tollsAmount",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "ehailFee",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "totalAmount",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "tripType",
+				"type": "INT32"
+			},
+			{
+				"name": "puYear",
+				"type": "UTF8"
+			},
+			{
+				"name": "puMonth",
+				"type": "UTF8"
+			}
+		]
+	}
+}
