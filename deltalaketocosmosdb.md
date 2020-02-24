@@ -6,7 +6,7 @@ Stream reads the event expands it and splits into various schema or tables. Then
 
 ## Architecture
 
-https://github.com/balakreshnan/wagsrepo/blob/master/images/scmcosmos.jpg
+![alt text](https://github.com/balakreshnan/wagsrepo/blob/master/images/scmcosmos.jpg "Architecture")
 
 ## Data Simulator
 
