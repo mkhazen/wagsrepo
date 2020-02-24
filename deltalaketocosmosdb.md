@@ -127,7 +127,10 @@ Count the dataset to see if we can validate how much data was pushed to delta la
 custdatadf.count
 ```
 
-Now Part 2  Create a data load to read from delta lake and push to cosmos db
+## Now Part 2  Create a data load to read from delta lake and push to cosmos db
+
+Now that we have loaded the data into Delta Lake, It's time to pull data from Delta lake and push into cosmos db.
+Create a new notebook and then following the below code. I am doing this as batch processing but it is also possible to use structured streaming based on delta lake change capture and push data into cosmos db.
 
 ```
 Note: make sure cosmos db uber jar is uploaded as library to the cluster. Make sure the version matches the scala version and spark version
