@@ -59,8 +59,10 @@ val messages =
            get_json_object(($"body").cast("string"), "$.customername").alias("customername"),
            get_json_object(($"body").cast("string"), "$.address").alias("address"),
            get_json_object(($"body").cast("string"), "$.city").alias("city"),
-           get_json_object(($"body").cast("string"), "$.zip").alias("zip")
+           get_json_object(($"body").cast("string"), "$.zip").alias("zip"),
+           get_json_object(($"body").cast("string"), "$.eventdatetime").cast("date").alias("Date")
           )
+  //.withColumn("Date", get_json_object(($"body").cast("string"), "$.eventdatetime").cast("date"))) 
    //.select("Offset", "Time (readable)", "Timestamp", "Body")
 
 messages.printSchema
@@ -92,47 +94,21 @@ import org.apache.spark.sql.SaveMode
 
 // COMMAND ----------
 
-val df = messages.withColumn("Date", (col("eventdatetime").cast("date"))) 
-//display(df1)
-
-// COMMAND ----------
-
 messages.printSchema()
 
 // COMMAND ----------
 
-df.printSchema()
-
-// COMMAND ----------
-
-df.writeStream
+messages.writeStream
   .outputMode("append")
   .option("checkpointLocation", "/delta/events/_checkpoints/etl-from-json")
   .option("mergeSchema", "true")
   .format("delta")
   .partitionBy("Date")
   .table("delta_custdata")
-  //.save("/delta/custdata")
-
-// COMMAND ----------
-
-//write text data out to console
-messages.writeStream.outputMode("append").format("console").option("truncate", false).start().awaitTermination()
 
 // COMMAND ----------
 
 df.createOrReplaceTempView("device_telemetry_data")
-
-// COMMAND ----------
-
-
-
-// COMMAND ----------
-
-// Sending the incoming stream into the console.
-// Data comes in batches!
-//binary display
-incomingStream.writeStream.outputMode("append").format("console").option("truncate", false).start().awaitTermination()
 
 // COMMAND ----------
 
