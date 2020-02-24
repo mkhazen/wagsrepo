@@ -1,6 +1,8 @@
-# Event based Delta lake and loading real time cache using cosmos db
+# Event based Delta lake and loading real time cache such as Azure cosmos db
 
 Provide a architecture that can get real time events and gets processed into delta lake for long term storage using structured streaming. Delta lake provides ability to do change data capture.
+
+The reason why we are choosing to load data into Azure cosmos db is to tackle real time queries from various API that interface to various other business application and also to provide close to real time data as possible.
 
 Stream reads the event expands it and splits into various schema or tables. Then another stream is responsible for reading a combination of tables and pick columns that are needed and push into cosmos db as they arrive.
 
