@@ -68,7 +68,13 @@ messages.printSchema
 // COMMAND ----------
 
 // MAGIC %sql
-// MAGIC CREATE TABLE custdata (eventdatetime STRING, customername STRING,address STRING,city STRING  , zip STRING)
+// MAGIC --Drop table custdata;
+// MAGIC Drop table delta_custdata;
+
+// COMMAND ----------
+
+// MAGIC %sql
+// MAGIC CREATE TABLE custdata (eventdatetime STRING, customername STRING,address STRING,city STRING  , zip STRING, Date date)
 
 // COMMAND ----------
 
@@ -81,11 +87,30 @@ messages.createOrReplaceTempView("custdata")
 
 // COMMAND ----------
 
-messages.writeStream
+import org.apache.spark.sql.SaveMode
+
+
+// COMMAND ----------
+
+val df = messages.withColumn("Date", (col("eventdatetime").cast("date"))) 
+//display(df1)
+
+// COMMAND ----------
+
+messages.printSchema()
+
+// COMMAND ----------
+
+df.printSchema()
+
+// COMMAND ----------
+
+df.writeStream
   .outputMode("append")
   .option("checkpointLocation", "/delta/events/_checkpoints/etl-from-json")
+  .option("mergeSchema", "true")
   .format("delta")
-  .partitionBy("eventdatetime")
+  .partitionBy("Date")
   .table("delta_custdata")
   //.save("/delta/custdata")
 
