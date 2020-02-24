@@ -38,8 +38,11 @@ itemdf.count()
 
 // COMMAND ----------
 
-// Write configuration
+display(itemdf)
 
+// COMMAND ----------
+
+// Write configuration
 val writeConfig = Config(Map(
   "Endpoint" -> "https://idicosmos.documents.azure.com:443/",
   "Masterkey" -> "zoyDIf201Wpu6kCY0Njrh3R0v9SgUdYKmm3nvilyjYEXkhKv95aTgOBxN7tbSA4nU6iXPfcZh36v9rLL3EaEeg==",
@@ -50,4 +53,4 @@ val writeConfig = Config(Map(
 
 // Write to Cosmos DB from the flights DataFrame
 import org.apache.spark.sql.SaveMode
-custdatadf.write.mode(SaveMode.Overwrite).cosmosDB(writeConfig)
+custdatadf.repartition(1).write.mode(SaveMode.Overwrite).cosmosDB(writeConfig)
