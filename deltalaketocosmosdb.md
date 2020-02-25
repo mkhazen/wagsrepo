@@ -184,3 +184,58 @@ val writeConfig = Config(Map(
 import org.apache.spark.sql.SaveMode
 custdatadf.repartition(1).write.mode(SaveMode.Overwrite).cosmosDB(writeConfig)
 ```
+
+## Now Part 3  Create a data load to read from delta lake and push to cosmos db
+
+Now we are going to push data from taking the delta changes from delta lake in structured streaming.
+
+Lets add all the includes
+
+```
+import scala.collection.JavaConverters._
+import com.microsoft.azure.eventhubs._
+import java.util.concurrent._
+import scala.collection.immutable._
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
+import org.apache.spark.sql.types._
+import org.apache.spark.sql.functions._
+
+import org.apache.spark.sql.functions._
+
+// Import Necessary Libraries
+import com.microsoft.azure.cosmosdb.spark.schema._
+import com.microsoft.azure.cosmosdb.spark._
+import com.microsoft.azure.cosmosdb.spark.config.Config
+import org.joda.time._
+import org.joda.time.format._
+import com.microsoft.azure.cosmosdb.spark.schema._
+import com.microsoft.azure.cosmosdb.spark._
+import com.microsoft.azure.cosmosdb.spark.config.Config
+import org.codehaus.jackson.map.ObjectMapper
+import com.microsoft.azure.cosmosdb.spark.streaming._
+```
+
+Now load the delta table changes into stream
+```
+val messages = spark.readStream.format("delta").option("ignoreDeletes", "true").option("ignoreChanges", "true").table("delta_custdata")
+```
+
+now to move those changes to cosmos db using structured streaming
+
+```
+val ConfigMap = Map(
+"Endpoint" -> "https://cosmosdbaccount.documents.azure.com:443/",
+"Masterkey" -> "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+"Database" -> "databasename",
+"Collection" -> "caontainername",
+"Upsert" -> "true"
+)
+messages.select("eventdatetime","customername","address","city","zip", "Date")
+  .writeStream
+  .format(classOf[CosmosDBSinkProvider].getName)
+  .outputMode("append")
+  .options(ConfigMap)
+  .option("checkpointLocation", "/tmp/custdata")
+  .start()
+  ```
