@@ -216,6 +216,11 @@ import org.codehaus.jackson.map.ObjectMapper
 import com.microsoft.azure.cosmosdb.spark.streaming._
 ```
 
+to reprocess the data again make sure delete the checkpoint folder
+```
+dbutils.fs.rm("/tmp/custdata1", true)
+```
+
 Now load the delta table changes into stream
 ```
 val messages = spark.readStream.format("delta").option("ignoreDeletes", "true").option("ignoreChanges", "true").table("delta_custdata")
@@ -231,11 +236,11 @@ val ConfigMap = Map(
 "Collection" -> "caontainername",
 "Upsert" -> "true"
 )
-messages.select("eventdatetime","customername","address","city","zip", "Date")
+messages.select("eventdatetime","customername","address","city","zip", "Date").withColumn("Date", (col("eventdatetime").cast("date"))) 
   .writeStream
   .format(classOf[CosmosDBSinkProvider].getName)
-  .outputMode("append")
+  .outputMode("update")
   .options(ConfigMap)
-  .option("checkpointLocation", "/tmp/custdata")
+  .option("checkpointLocation", "/tmp/custdata1")
   .start()
   ```
