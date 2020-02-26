@@ -31,7 +31,7 @@ dbutils.fs.rm("wasbs://deltaidi@waginput.blob.core.windows.net/deltaidi/delta_cu
 
 // COMMAND ----------
 
-val messages = spark.readStream.format("delta").option("ignoreDeletes", "true").option("ignoreChanges", "true").option("path", deltapath).table("delta_custdata")
+val messages = spark.readStream.format("delta").option("ignoreDeletes", "true").option("ignoreChanges", "true").option("path", deltapath).table("delta_custdata").select("eventdatetime","customername","address","city","state","zip")
 
 // COMMAND ----------
 
@@ -63,7 +63,20 @@ val jdbcconn = "jdbc:sqlserver://idicdmsvr.database.windows.net:1433;database=id
 
 // COMMAND ----------
 
-messages.writeStream..select("eventdatetime","customername","address","city","state","zip")
+import org.apache.spark.sql.SaveMode
+
+// COMMAND ----------
+
+val messages = spark.readStream.format("delta").option("ignoreDeletes", "true").option("ignoreChanges", "true").option("path", deltapath).table("delta_custdata").select("eventdatetime","customername","address","city","state","zip")
+
+// COMMAND ----------
+
+dbutils.fs.rm("wasbs://deltaidi@waginput.blob.core.windows.net/deltaidi/delta_custdata/_checkpoints/etl-from-json_sqldw", true)
+
+// COMMAND ----------
+
+//messages.writeStream.select("eventdatetime","customername","address","city","state","zip")
+messages.writeStream
   .format("com.databricks.spark.sqldw")
   .option("url", jdbcconn)
   .option("tempDir", "wasbs://iditemp@waginput.blob.core.windows.net/stage")
