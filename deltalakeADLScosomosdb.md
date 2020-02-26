@@ -22,6 +22,7 @@ The app was wrote in c# to generate data and send on demand basis to event hub
 Event hub namespace created. Create a event hub with default 4 parition for now.
 
 ## Azure Databricks
+
 Clear any data in Delta table table
 ```
 %sql
@@ -106,8 +107,8 @@ messages.printSchema
 ```
 
 ```
-val checkpointLocation = "wasbs://deltaidi@waginput.blob.core.windows.net/deltaidi/delta_custdata/_checkpoints/etl-from-json"
-val deltapath = "wasbs://deltaidi@waginput.blob.core.windows.net/deltaidi/delta_custdata"
+val checkpointLocation = "wasbs://xxxxxx@xxxxxx.blob.core.windows.net/deltaidi/delta_custdata/_checkpoints/etl-from-json"
+val deltapath = "wasbs://xxxxxxx@xxxxxxx.blob.core.windows.net/deltaidi/delta_custdata"
 ```
 
 Now run the stream. This would be a continously running process.
@@ -176,15 +177,15 @@ spark.conf.set(   "fs.azure.account.key.xxxxxxx.blob.core.windows.net", "xxxxxxx
 ```
 
 ```
-val checkpointLocation = "wasbs://deltaidi@waginput.blob.core.windows.net/deltaidi/delta_custdata/_checkpoints/etl-from-json"
-val deltapath = "wasbs://deltaidi@xxxxx.blob.core.windows.net/deltaidi/delta_custdata"
-val checkpointLocationforcosmo = "wasbs://xxxxx@waginput.blob.core.windows.net/deltaidi/delta_custdata/_checkpoints/etl-from-json_cosmos"
+val checkpointLocation = "wasbs://xxxxxxxx@xxxxxx.blob.core.windows.net/deltaidi/delta_custdata/_checkpoints/etl-from-json"
+val deltapath = "wasbs://xxxxxxx@xxxxx.blob.core.windows.net/deltaidi/delta_custdata"
+val checkpointLocationforcosmo = "wasbs://xxxxx@xxxxxxx.blob.core.windows.net/deltaidi/delta_custdata/_checkpoints/etl-from-json_cosmos"
 ```
 
 
 to reprocess the data again make sure delete the checkpoint folder
 ```
-dbutils.fs.rm("wasbs://deltaidi@waginput.blob.core.windows.net/deltaidi/delta_custdata/_checkpoints/etl-from-json_cosmos", true)
+dbutils.fs.rm("wasbs://deltaidi@xxxxx.blob.core.windows.net/deltaidi/delta_custdata/_checkpoints/etl-from-json_cosmos", true)
 ```
 
 Now load the delta table changes into stream
@@ -196,10 +197,10 @@ now to move those changes to cosmos db using structured streaming
 
 ```
 val ConfigMap = Map(
-"Endpoint" -> "https://idicosmos.documents.azure.com:443/",
-"Masterkey" -> "zoyDIf201Wpu6kCY0Njrh3R0v9SgUdYKmm3nvilyjYEXkhKv95aTgOBxN7tbSA4nU6iXPfcZh36v9rLL3EaEeg==",
-"Database" -> "idiscm",
-"Collection" -> "custdata1",
+"Endpoint" -> "https://cosmosaccount.documents.azure.com:443/",
+"Masterkey" -> "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+"Database" -> "databasename",
+"Collection" -> "containername",
 "Upsert" -> "true"
 )
 
