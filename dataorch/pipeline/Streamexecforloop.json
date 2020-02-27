@@ -1,46 +1,6 @@
 {
 	"name": "Streamexecforloop",
 	"properties": {
-		"activities": [
-			{
-				"name": "ForEach1",
-				"type": "ForEach",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"items": {
-						"value": "@item()",
-						"type": "Expression"
-					},
-					"batchCount": 5,
-					"activities": [
-						{
-							"name": "TableId",
-							"type": "DatabricksNotebook",
-							"dependsOn": [],
-							"policy": {
-								"timeout": "7.00:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"notebookPath": "/Users/babal@microsoft.com/serve/synapseingeststreamtest",
-								"baseParameters": {
-									"tableid": "@item().SourceTable"
-								}
-							},
-							"linkedServiceName": {
-								"referenceName": "wagsADB",
-								"type": "LinkedServiceReference"
-							}
-						}
-					]
-				}
-			}
-		],
 		"annotations": []
 	}
 }
