@@ -43,3 +43,27 @@ SELECT COUNT(*)
   FROM custdata1
   OPTION (LABEL = 'facts_loads')
 
+select count(*) from custdata2;
+
+truncate table custdata10;
+truncate table custdata11;
+truncate table custdata12;
+truncate table custdata13;
+truncate table custdata14;
+truncate table custdata15;
+truncate table custdata16;
+truncate table custdata17;
+truncate table custdata18;
+truncate table custdata19;
+
+select count(*) from custdata10;
+select count(*) from custdata11;
+select count(*) from custdata12;
+select count(*) from custdata13;
+select count(*) from custdata14;
+select count(*) from custdata15;
+select count(*) from custdata16;
+select count(*) from custdata17;
+select count(*) from custdata18;
+select count(*) from custdata19;
+
