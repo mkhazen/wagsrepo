@@ -34,6 +34,8 @@ WHERE  name LIKE '%rc%' AND type_desc = 'DATABASE_ROLE';
 
 EXEC sp_addrolemember 'xlargerc', 'adbingest';
 
+to start with Static10rc should be enough.
+
 EXEC sp_droprolemember 'xlargerc', 'adbingest';
 ```
 
