@@ -193,12 +193,7 @@
 						"type": "SecureString",
 						"value": "[parameters('wagsADB_accessToken')]"
 					},
-					"newClusterNodeType": "Standard_DS3_v2",
-					"newClusterNumOfWorker": "2:5",
-					"newClusterSparkEnvVars": {
-						"PYSPARK_PYTHON": "/databricks/python3/bin/python3"
-					},
-					"newClusterVersion": "5.4.x-scala2.11"
+					"existingClusterId": "1205-140903-isles770"
 				}
 			},
 			"dependsOn": []

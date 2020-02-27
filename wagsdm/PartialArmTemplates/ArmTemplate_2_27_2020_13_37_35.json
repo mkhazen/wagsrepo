@@ -1,0 +1,168 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "wagsdm"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/wagsADB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://eastus2.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "**********"
+					},
+					"existingClusterId": "1205-140903-isles770"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Streamexec')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "table 10",
+						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/babal@microsoft.com/serve/synapseingeststreamtest",
+							"baseParameters": {
+								"tableid": "10"
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "wagsADB",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "Table11",
+						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/babal@microsoft.com/serve/synapseingeststreamtest",
+							"baseParameters": {
+								"tableid": "11"
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "wagsADB",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "Table12",
+						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/babal@microsoft.com/serve/synapseingeststreamtest",
+							"baseParameters": {
+								"tableid": "12"
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "wagsADB",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "Table13",
+						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/babal@microsoft.com/serve/synapseingeststreamtest",
+							"baseParameters": {
+								"tableid": "13"
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "wagsADB",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "Table14",
+						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/babal@microsoft.com/serve/synapseingeststreamtest",
+							"baseParameters": {
+								"tableid": "14"
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "wagsADB",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"parameters": {
+					"tableid": {
+						"type": "string",
+						"defaultValue": "10"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/wagsADB')]"
+			]
+		}
+	]
+}

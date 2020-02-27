@@ -13,6 +13,41 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "incomingTrain",
+								"type": "DatasetReference"
+							},
+							"name": "incomingraw"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "rawTrain",
+								"type": "DatasetReference"
+							},
+							"name": "rawtrain"
+						}
+					],
+					"transformations": [
+						{
+							"name": "Select1"
+						}
+					],
+					"script": "source(output(\n\t\tkey as string,\n\t\tfare_amount as string,\n\t\tpickup_datetime as string,\n\t\tpickup_longitude as string,\n\t\tpickup_latitude as string,\n\t\tdropoff_longitude as string,\n\t\tdropoff_latitude as string,\n\t\tpassenger_count as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> incomingraw\nincomingraw select(mapColumn(\n\t\tkey,\n\t\tfare_amount,\n\t\tpickup_datetime,\n\t\tpickup_longitude,\n\t\tpickup_latitude,\n\t\tdropoff_longitude,\n\t\tdropoff_latitude,\n\t\tpassenger_count\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 sink(input(\n\t\tage as string,\n\t\tjob as string,\n\t\tmarital as string,\n\t\teducation as string,\n\t\tdefault as string,\n\t\thousing as string,\n\t\tloan as string,\n\t\tcontact as string,\n\t\tmonth as string,\n\t\tday_of_week as string,\n\t\tduration as string,\n\t\tcampaign as string,\n\t\tpdays as string,\n\t\tprevious as string,\n\t\tpoutcome as string,\n\t\t{emp.var.rate} as string,\n\t\t{cons.price.idx} as string,\n\t\t{cons.conf.idx} as string,\n\t\teuribor3m as string,\n\t\t{nr.employed} as string,\n\t\ty as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> rawtrain"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/jsoninput')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -25,8 +60,7 @@
 								"referenceName": "Json1",
 								"type": "DatasetReference"
 							},
-							"name": "jsoninput",
-							"typeProperties": {}
+							"name": "jsoninput"
 						}
 					],
 					"sinks": [
@@ -64,16 +98,14 @@
 								"referenceName": "opendataset",
 								"type": "DatasetReference"
 							},
-							"name": "taxidata",
-							"typeProperties": {}
+							"name": "taxidata"
 						},
 						{
 							"dataset": {
 								"referenceName": "greentaxi",
 								"type": "DatasetReference"
 							},
-							"name": "taxigreen",
-							"typeProperties": {}
+							"name": "taxigreen"
 						}
 					],
 					"sinks": [
@@ -381,7 +413,9 @@
 				],
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflow1')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/cphyper')]",
