@@ -149,6 +149,10 @@ Sample dimenstion tables are available in code/sampledata folder
 
 Prerequistie: upload the sample data into ADLS store before you begin this section.
 
+here is now to load the data into delta lake:
+
+https://github.com/balakreshnan/wagsrepo/blob/master/deltadataload.md
+
 Lets add all the includes
 
 ```
