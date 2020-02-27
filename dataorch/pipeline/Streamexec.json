@@ -5,7 +5,14 @@
 			{
 				"name": "table 10",
 				"type": "DatabricksNotebook",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Start",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -28,7 +35,14 @@
 			{
 				"name": "Table11",
 				"type": "DatabricksNotebook",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Start",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -51,7 +65,14 @@
 			{
 				"name": "Table12",
 				"type": "DatabricksNotebook",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Start",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -74,7 +95,14 @@
 			{
 				"name": "Table13",
 				"type": "DatabricksNotebook",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Start",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -97,7 +125,14 @@
 			{
 				"name": "Table14",
 				"type": "DatabricksNotebook",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Start",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -110,6 +145,251 @@
 					"notebookPath": "/Users/babal@microsoft.com/serve/synapseingeststreamtest",
 					"baseParameters": {
 						"tableid": "14"
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "wagsADB",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Start",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/babal@microsoft.com/serve/Start"
+				},
+				"linkedServiceName": {
+					"referenceName": "wagsADB",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "End",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "table 10",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Table11",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Table12",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Table13",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Table15",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Table16",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Table14",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "table17",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Table19",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/babal@microsoft.com/serve/End"
+				},
+				"linkedServiceName": {
+					"referenceName": "wagsADB",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Table15",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "Start",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/babal@microsoft.com/serve/synapseingeststreamtest",
+					"baseParameters": {
+						"tableid": "15"
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "wagsADB",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Table16",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "Start",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/babal@microsoft.com/serve/synapseingeststreamtest",
+					"baseParameters": {
+						"tableid": "16"
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "wagsADB",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "table17",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "Start",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/babal@microsoft.com/serve/synapseingeststreamtest",
+					"baseParameters": {
+						"tableid": "17"
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "wagsADB",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Table18",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "Start",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/babal@microsoft.com/serve/synapseingeststreamtest",
+					"baseParameters": {
+						"tableid": "18"
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "wagsADB",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Table19",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "Start",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/babal@microsoft.com/serve/synapseingeststreamtest",
+					"baseParameters": {
+						"tableid": "19"
 					}
 				},
 				"linkedServiceName": {
