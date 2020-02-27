@@ -1,5 +1,9 @@
 # Loading Data into Azure synapse analytics using structured stream in parallel streams
 
+## End to End Architecture
+
+![alt text](https://github.com/balakreshnan/wagsrepo/blob/master/images/idiserversynapsestream.jpg "Architecture")
+
 ## setup Azure synpase analytics
 
 Create a user name to use for ingest
