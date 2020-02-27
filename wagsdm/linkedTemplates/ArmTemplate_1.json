@@ -25,6 +25,130 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/greentaxi')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "nyctlc/green",
+						"container": "opendataset"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "vendorID",
+						"type": "INT32"
+					},
+					{
+						"name": "lpepPickupDatetime",
+						"type": "INT96"
+					},
+					{
+						"name": "lpepDropoffDatetime",
+						"type": "INT96"
+					},
+					{
+						"name": "passengerCount",
+						"type": "INT32"
+					},
+					{
+						"name": "tripDistance",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "puLocationId",
+						"type": "UTF8"
+					},
+					{
+						"name": "doLocationId",
+						"type": "UTF8"
+					},
+					{
+						"name": "pickupLongitude",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "pickupLatitude",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "dropoffLongitude",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "dropoffLatitude",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "rateCodeID",
+						"type": "INT32"
+					},
+					{
+						"name": "storeAndFwdFlag",
+						"type": "UTF8"
+					},
+					{
+						"name": "paymentType",
+						"type": "INT32"
+					},
+					{
+						"name": "fareAmount",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "extra",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "mtaTax",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "improvementSurcharge",
+						"type": "UTF8"
+					},
+					{
+						"name": "tipAmount",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "tollsAmount",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "ehailFee",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "totalAmount",
+						"type": "DOUBLE"
+					},
+					{
+						"name": "tripType",
+						"type": "INT32"
+					},
+					{
+						"name": "puYear",
+						"type": "UTF8"
+					},
+					{
+						"name": "puMonth",
+						"type": "UTF8"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/greentaxids')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1106,138 +1230,6 @@
 					"referenceName": "[parameters('integrationRuntime_mltest1')]",
 					"type": "IntegrationRuntimeReference"
 				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Streamexec')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "table 10",
-						"type": "DatabricksNotebook",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"notebookPath": "/Users/babal@microsoft.com/serve/synapseingeststreamtest",
-							"baseParameters": {
-								"tableid": "10"
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "wagsADB",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "Table11",
-						"type": "DatabricksNotebook",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"notebookPath": "/Users/babal@microsoft.com/serve/synapseingeststreamtest",
-							"baseParameters": {
-								"tableid": "11"
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "wagsADB",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "Table12",
-						"type": "DatabricksNotebook",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"notebookPath": "/Users/babal@microsoft.com/serve/synapseingeststreamtest",
-							"baseParameters": {
-								"tableid": "12"
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "wagsADB",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "Table13",
-						"type": "DatabricksNotebook",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"notebookPath": "/Users/babal@microsoft.com/serve/synapseingeststreamtest",
-							"baseParameters": {
-								"tableid": "13"
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "wagsADB",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "Table14",
-						"type": "DatabricksNotebook",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"notebookPath": "/Users/babal@microsoft.com/serve/synapseingeststreamtest",
-							"baseParameters": {
-								"tableid": "14"
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "wagsADB",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"parameters": {
-					"tableid": {
-						"type": "string",
-						"defaultValue": "10"
-					}
-				},
-				"annotations": []
 			},
 			"dependsOn": []
 		},
