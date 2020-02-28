@@ -29,7 +29,7 @@
 								"notebookPath": "/Users/babal@microsoft.com/serve/synapseingeststreamtest",
 								"baseParameters": {
 									"tableid": {
-										"value": "@item()",
+										"value": "string(@item())",
 										"type": "Expression"
 									}
 								}
