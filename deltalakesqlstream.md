@@ -270,6 +270,28 @@ truncate table custdata19;
 
 ## Structured streaming implementation for parallel
 
+Now it is time to implement structured streaming to load the data into azure synapse analytics
+
+## Azure databricks Cluster configuration
+
+Cluster mode: Standard
+Python: 3
+Databricks RUntime version 6.3
+
+Worker Type: Standard DS4_V2
+Driver Type: Standard DS4_V2
+
+Minimum nodes: 5
+Maximum nodes 10
+Enable Autoscaling: Checked
+Terminate after: 20 minutes
+
+Libraries:
+Cosmos DB: azure_cosmosdb_spark_2_4_0_2_11_1_4_0_uber.jar
+Event Hub: com.microsoft.azure:azure-eventhubs-spark_2.11:2.3.12
+Azure SQL Db: com.microsoft.azure:azure-sqldb-spark:1.0.2
+Azure SQL DW: already loaded in cluster
+
 ```
 Class.forName("com.databricks.spark.sqldw.DefaultSource")
 ```

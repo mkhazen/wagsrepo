@@ -8,7 +8,7 @@ Stream reads the event expands it and splits into various schema or tables. Then
 
 ## Architecture
 
-![alt text](https://github.com/balakreshnan/wagsrepo/blob/master/images/scmsynapse.jpg "Architecture")
+![alt text](https://github.com/balakreshnan/wagsrepo/blob/master/images/scmsynapse.jpgvisu "Architecture")
 
 ## Data Simulator
 
@@ -22,6 +22,27 @@ The app was wrote in c# to generate data and send on demand basis to event hub
 Event hub namespace created. Create a event hub with default 4 parition for now.
 
 ## Azure Databricks
+
+## Azure databricks Cluster configuration
+
+Cluster mode: Standard
+Python: 3
+Databricks RUntime version 6.3
+
+Worker Type: Standard DS4_V2
+Driver Type: Standard DS4_V2
+
+Minimum nodes: 5
+Maximum nodes 10
+Enable Autoscaling: Checked
+Terminate after: 20 minutes
+
+Libraries:
+Cosmos DB: azure_cosmosdb_spark_2_4_0_2_11_1_4_0_uber.jar
+Event Hub: com.microsoft.azure:azure-eventhubs-spark_2.11:2.3.12
+Azure SQL Db: com.microsoft.azure:azure-sqldb-spark:1.0.2
+Azure SQL DW: already loaded in cluster
+
 
 Clear any data in Delta table table
 ```
