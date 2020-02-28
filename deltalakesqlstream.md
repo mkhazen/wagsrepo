@@ -378,15 +378,31 @@ We are going to call the same notebook but passing tableid as parameter variable
 
 Configure the ADB connection using token. Then select the notebook.
 Now go to settings and add new base parameters
-tableid = 10
-tableid = 11
-tableid = 12
-tableid = 13
-tableid = 14
-tableid = 15
-tableid = 16
-tableid = 17
-tableid = 18
-tableid = 19
+tableid = 10 <br />
+tableid = 11 <br />
+tableid = 12 <br />
+tableid = 13 <br />
+tableid = 14 <br />
+tableid = 15 <br />
+tableid = 16 <br />
+tableid = 17 <br />
+tableid = 18 <br />
+tableid = 19 <br />
 
 Now run the streaming job.
+
+Statics on running
+
+Azure Synapse Analytics: Gen2: DW100c
+
+EXEC sp_addrolemember 'xlargerc', 'adbingest';
+Time Taken: 1:05 mins
+
+EXEC sp_addrolemember 'staticrc20', 'adbingest';
+Time Taken: 4:10 mins
+
+EXEC sp_addrolemember 'staticrc40', 'adbingest';
+Time Taken: 2:10 mins
+
+EXEC sp_addrolemember 'staticrc50', 'adbingest';
+Time Taken: 1:05 mins

@@ -26,6 +26,8 @@ WHERE  name LIKE '%rc%' AND type_desc = 'DATABASE_ROLE';
 
 EXEC sp_addrolemember 'xlargerc', 'adbingest';
 
+EXEC sp_addrolemember 'xlargerc', 'adbingest';
+
 EXEC sp_droprolemember 'xlargerc', 'adbingest';
 
 CREATE WORKLOAD GROUP adbload 
