@@ -406,3 +406,78 @@ Time Taken: 2:10 mins
 
 EXEC sp_addrolemember 'staticrc50', 'adbingest';
 Time Taken: 1:05 mins
+
+Azure Synapse Analytics: Gen2: DW200c
+EXEC sp_addrolemember 'staticrc50', 'adbingest';
+Time Taken: 1:05 mins
+
+EXEC sp_addrolemember 'staticrc20', 'adbingest';
+Time Taken: 1:10 mins
+
+## create a database script to create 100 or so tables
+
+Log into SQL management studio and create a stored procedure as below
+
+```
+-- ======================================================================
+-- Create Stored Procedure Template for Azure SQL Data Warehouse Database
+-- ======================================================================
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:      <Author, , Name>
+-- Create Date: <Create Date, , >
+-- Description: <Description, , >
+-- =============================================
+Create PROCEDURE usp_createtable
+(
+    -- Add the parameters for the stored procedure here
+    @start int,
+	@end int
+)
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON
+
+    -- Insert statements for procedure here
+    --SELECT <@Param1, sysname, @p1>, <@Param2, sysname, @p2>
+
+	Declare @endcount int
+
+	Set @endcount = @start + @end;
+
+	WHILE   @start < @endcount
+	BEGIN
+		DECLARE @tablename varchar(400)
+		
+		Set @tablename = 'custdata' + cast(@start AS VARCHAR(10))
+		print @tablename
+
+		
+
+		DECLARE @sql_code NVARCHAR(4000) = 'IF OBJECT_ID(N'''+@tablename+''', N''U'') IS NOT NULL Drop table ' + @tablename + ' ; CREATE TABLE ' + @tablename + ' (	[eventdatetime] [varchar](400) NULL,	[customername] [varchar](300) NULL,	[address] [varchar](500) NULL,	[city] [varchar](100) NULL,	[state] [varchar](50) NULL,	[zip] [varchar](50) NULL);';
+		--print @sql_code
+		EXEC    sp_executesql @sql_code;
+		
+		SET     @start +=1;
+	END
+
+END
+GO
+
+```
+
+then create 100 tables try this is SSMS
+
+First parameter is number to start from in my case i am starting from 20 <br />
+Second parameter is number of table to create in my case it is 100 <br />
+So table will start from custdata20 and will end custdata119
+
+```
+exec usp_createtable 20,100
+```
+

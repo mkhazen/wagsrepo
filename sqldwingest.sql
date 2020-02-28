@@ -26,9 +26,12 @@ WHERE  name LIKE '%rc%' AND type_desc = 'DATABASE_ROLE';
 
 EXEC sp_addrolemember 'xlargerc', 'adbingest';
 
-EXEC sp_addrolemember 'xlargerc', 'adbingest';
+EXEC sp_addrolemember 'staticrc20', 'adbingest';
+EXEC sp_addrolemember 'staticrc40', 'adbingest';
+EXEC sp_addrolemember 'staticrc50', 'adbingest';
 
 EXEC sp_droprolemember 'xlargerc', 'adbingest';
+EXEC sp_droprolemember 'staticrc20', 'adbingest';
 
 CREATE WORKLOAD GROUP adbload 
 WITH
@@ -68,4 +71,9 @@ select count(*) from custdata16;
 select count(*) from custdata17;
 select count(*) from custdata18;
 select count(*) from custdata19;
+
+exec usp_createtable 20,100
+
+
+
 
