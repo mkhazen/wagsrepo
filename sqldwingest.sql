@@ -75,5 +75,7 @@ select count(*) from custdata19;
 exec usp_createtable 20,100
 
 
+select count(*) from custdata20;
 
+select count(*) from custdata119;
 
