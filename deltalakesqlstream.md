@@ -601,5 +601,49 @@ Only 8 parallel runs are running.
 
 https://www.microsoft.com/developerblog/2019/01/18/running-parallel-apache-spark-notebook-workloads-on-azure-databricks/
 
+Now change the parallel code to more execute more jobs
+
+```
+val jobArguments = ""
+ 
+// define the name of the Azure Databricks notebook to run
+val notebookToRun = "synapseingeststreamtest"
+ 
+// define maximum number of jobs to run in parallel
+val totalJobs = 10
+ 
+import java.util.concurrent.Executors
+import scala.concurrent.{Await, ExecutionContext, Future}
+import scala.concurrent.duration.Duration
+ 
+
+
+// look up required context for parallel run calls
+val context = dbutils.notebook.getContext()
+ 
+// create threadpool for parallel runs
+implicit val executionContext = ExecutionContext.fromExecutorService(
+  Executors.newFixedThreadPool(totalJobs))
+ 
+try {
+  val futures = list.zipWithIndex.map { case (args, i) =>
+    Future({
+      // ensure thread knows about databricks context
+      dbutils.notebook.setContext(context)
+ 
+      // define up to maxJobs separate scheduler pools
+      sc.setLocalProperty("spark.scheduler.pool", s"pool${i % totalJobs}")
+ 
+      // start the job in the scheduler pool
+      dbutils.notebook.run(notebookToRun, timeoutSeconds = 0, Map("tableid" -> args.toString())
+    })}
+ 
+  // wait for all the jobs to finish processing
+  Await.result(Future.sequence(futures), atMost = Duration.Inf)
+} finally {
+  // ensure to clean up the threadpool
+  executionContext.shutdownNow()
+}
+```
 
 Thank you!.
