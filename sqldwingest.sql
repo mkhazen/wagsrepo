@@ -79,3 +79,26 @@ select count(*) from custdata20;
 
 select count(*) from custdata119;
 
+truncate table custdata20;
+truncate table custdata21;
+truncate table custdata22;
+truncate table custdata23;
+truncate table custdata24;
+truncate table custdata25;
+truncate table custdata26;
+truncate table custdata27;
+truncate table custdata28;
+truncate table custdata29;
+
+select count(*) from custdata20;
+select count(*) from custdata21;
+select count(*) from custdata22;
+select count(*) from custdata23;
+select count(*) from custdata24;
+select count(*) from custdata25;
+select count(*) from custdata26;
+select count(*) from custdata27;
+select count(*) from custdata28;
+select count(*) from custdata29;
+
+Drop table dbo.databricks_*;

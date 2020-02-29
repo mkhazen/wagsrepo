@@ -292,6 +292,8 @@ Event Hub: com.microsoft.azure:azure-eventhubs-spark_2.11:2.3.12
 Azure SQL Db: com.microsoft.azure:azure-sqldb-spark:1.0.2
 Azure SQL DW: already loaded in cluster
 
+Notebook Name: synapseingeststreamtest
+
 ```
 Class.forName("com.databricks.spark.sqldw.DefaultSource")
 ```
@@ -481,3 +483,123 @@ So table will start from custdata20 and will end custdata119
 exec usp_createtable 20,100
 ```
 
+## Create a Spark Scala notebook to run multiple streams
+
+Since we need to test like 100's of stream doing that manual is challenging.
+So writing a scala notebook to loop a list which can be parallized and then run the notebook to stream data.
+
+Create 2 more notebooks
+
+Notebook 1 name: Invokestreams
+Notebook 2 name: runstreams
+
+Code for Invokestreams
+
+First build a parallel list so that we can parallize the notebook runs
+
+```
+val list = (20 to 29).toList
+list.par.map(_ + 0)
+```
+
+Now Execute the notebook by passing the table id as parameter.
+
+```
+// define some way to generate a sequence of workloads to run
+val jobArguments = list
+ 
+// define the name of the Azure Databricks notebook to run
+val notebookToRun = "runstreams"
+
+// look up required context for parallel run calls
+val context = dbutils.notebook.getContext()
+ 
+// start the jobs
+list.par.foreach(args => {
+  // ensure thread knows about databricks context
+  dbutils.notebook.setContext(context)
+  //dbutils.notebook.run(notebookToRun, timeoutSeconds = 0, args.toString)
+  dbutils.notebook.run(notebookToRun, timeoutSeconds = 0, Map("tableid" -> args.toString()))
+})
+```
+
+Code for runstreams
+
+Assign default value
+
+```
+dbutils.widgets.text("tableid", "10")
+```
+
+Now read the parameters passed to notebook
+
+```
+val tableid = dbutils.widgets.get("tableid")
+```
+
+Print the parameter variable
+
+```
+print(tableid)
+```
+
+Now create a vairable for notebook to run and assin the name of notebook as : synapseingeststreamtest
+
+```
+val notebookToRun = "synapseingeststreamtest"
+```
+
+Now time to run the notebook and pass the parameter or argument
+
+```
+dbutils.notebook.run(notebookToRun, timeoutSeconds = 0, Map("tableid" -> tableid))
+```
+
+```
+dbutils.notebook.exit(tableid)
+```
+
+Once you run the notebook you should see 8 notebooks run parallel.
+If cancelled the main one only the immediate child notebook cancels other wise it doesn't cancel the child-child.
+
+Now going to run parent child combination:
+
+Code for Invokestreams
+
+First build a parallel list so that we can parallize the notebook runs
+Depending on how many tables or streams to create we can increase the number in the list.
+Make sure there are enough tables precreated for the test to run.
+
+```
+val list = (20 to 29).toList
+list.par.map(_ + 0)
+```
+
+Now Execute the notebook by passing the table id as parameter.
+
+```
+// define some way to generate a sequence of workloads to run
+val jobArguments = list
+ 
+// define the name of the Azure Databricks notebook to run
+val notebookToRun = "synapseingeststreamtest"
+
+// look up required context for parallel run calls
+val context = dbutils.notebook.getContext()
+ 
+// start the jobs
+list.par.foreach(args => {
+  // ensure thread knows about databricks context
+  dbutils.notebook.setContext(context)
+  //dbutils.notebook.run(notebookToRun, timeoutSeconds = 0, args.toString)
+  dbutils.notebook.run(notebookToRun, timeoutSeconds = 0, Map("tableid" -> args.toString()))
+})
+```
+
+Now run the Invokestreams but this time call the actual stream that writes to Azure Synapse Analytics.
+Only 8 parallel runs are running.
+
+https://www.microsoft.com/developerblog/2019/01/18/running-parallel-apache-spark-notebook-workloads-on-azure-databricks/
+
+
+Thank you!.
