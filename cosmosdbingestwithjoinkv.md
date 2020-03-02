@@ -6,6 +6,10 @@ The reason why we are choosing to load data into Azure cosmos db is to tackle re
 
 Stream reads the event expands it and splits into various schema or tables. Then another stream is responsible for reading a combination of tables and pick columns that are needed and push into cosmos db as they arrive.
 
+Goal: to provide guidance only. Below articles assumes lot of fake data and less business logic processing. Provides a guidance on how to create a event driven delta lake for ingestion, curation and serve layer. 
+
+Assumption: Keeping long term storage in delta lake and using Cosmos for Serve layer as one option. Only choose this option if there is use case where high concurrency and data delviered through API to other systems. Not meant to do analytical work load.
+
 ## Architecture
 
 ![alt text](https://github.com/balakreshnan/wagsrepo/blob/master/images/scmcosmos1.jpg "Architecture")
@@ -16,6 +20,8 @@ I created a data simulator which sends out JSON message as
 {"eventdatetime":"2020-02-24T12:57:37.6956159-06:00","customername":"idicustomer 0","address":"xyz street","city":"new york","zip":"11022","Date": "2020-02-24"}
 
 The app was wrote in c# to generate data and send on demand basis to event hub
+
+https://github.com/balakreshnan/wagsrepo/blob/master/datagen.md
 
 ## Event hub
 
@@ -293,3 +299,9 @@ messages
   ```
 
   Now data will be flowing to cosmos db.
+
+  Go to Cosmos DB resource in Portal or use cosmos.azure.com and login into your collection and validate and see if the data is flowing or not.
+
+  When i tested i was able to see the data flowing. 
+
+  Note: Remember this code doesn't have any business logic as all the data are fake. In real work scenario i am sure there would be lot more business logic processing.
