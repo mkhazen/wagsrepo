@@ -171,6 +171,10 @@ Sample dimenstion tables are available in code/sampledata folder
 Prerequistie: upload the sample data into ADLS store before you begin this section.
 Also configure the key vault store and set the scope as wagsdata
 
+Below is the sample how secrets are saved in azure key vault
+
+![alt text](https://github.com/balakreshnan/wagsrepo/blob/master/images/cosmoskvconfig.jpg "Key Vault")
+
 here is now to load the data into delta lake:
 
 https://github.com/balakreshnan/wagsrepo/blob/master/deltadataload.md
