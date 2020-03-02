@@ -393,30 +393,62 @@ tableid = 19 <br />
 
 Now run the streaming job.
 
+## Workload management using resource class in Azure synapse analytics.
+
+The goal here is try to find the right resoruce class to use for all streams using one login but using different sessions.
+Each stream will same user name but with different session.
+
+Every run with time it took are recorded. TO find the exact for your use case please run similiar test like this in your production like environment and test it and see.
+
 Statics on running
 
 Azure Synapse Analytics: Gen2: DW100c
 
+```
 EXEC sp_addrolemember 'xlargerc', 'adbingest';
+```
+
 Time Taken: 1:05 mins
 
+```
 EXEC sp_addrolemember 'staticrc20', 'adbingest';
+```
+
 Time Taken: 4:10 mins
 
+```
 EXEC sp_addrolemember 'staticrc40', 'adbingest';
+```
+
 Time Taken: 2:10 mins
 
+```
 EXEC sp_addrolemember 'staticrc50', 'adbingest';
+```
+
 Time Taken: 1:05 mins
+
+## Increase the DW units a little and try the above combination.
 
 Azure Synapse Analytics: Gen2: DW200c
+
+```
 EXEC sp_addrolemember 'staticrc50', 'adbingest';
+```
+
 Time Taken: 1:05 mins
 
+```
 EXEC sp_addrolemember 'staticrc20', 'adbingest';
+```
+
 Time Taken: 1:10 mins
 
 ## create a database script to create 100 or so tables
+
+The above test was only performed with 10 tables but we need to increase the count to 100 or so and test.
+
+The below script basically creates tables by specificing from what number to start and how many tables are needed.
 
 Log into SQL management studio and create a stored procedure as below
 
