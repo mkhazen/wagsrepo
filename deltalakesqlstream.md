@@ -324,30 +324,50 @@ val tableid = dbutils.widgets.get("tableid")
 print(tableid)
 ```
 
+Load the secrets from key vault.
+
+```
+val blobname = dbutils.secrets.get(scope = "wagsdata", key = "blobname")
+val blobkey = dbutils.secrets.get(scope = "wagsdata", key = "blobkey")
+val scmcosmoscontainer = dbutils.secrets.get(scope = "wagsdata", key = "scmcosmoscontainer")
+val blobcontainer = dbutils.secrets.get(scope = "wagsdata", key = "blobcontainer")
+
+val sqldwname1 = dbutils.secrets.get(scope = "wagsdata", key = "sqldwname1")
+val sqldwuser1 = dbutils.secrets.get(scope = "wagsdata", key = "sqldwuser1")
+val sqldwpwd1 = dbutils.secrets.get(scope = "wagsdata", key = "sqldwpwd1")
+val sqldwsvrname1 = dbutils.secrets.get(scope = "wagsdata", key = "sqldwsvrname1")
+val sqldwdatabase1 = dbutils.secrets.get(scope = "wagsdata", key = "sqldwdatabase1")
+```
+
 Set the ADLS configuration
 
 ```
-spark.conf.set(   "fs.azure.account.key.xxxx.blob.core.windows.net", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+spark.conf.set(   "fs.azure.account.key."+ blobname +".blob.core.windows.net", blobkey)
+```
+
+```
+val bloburl = "wasbs://"+blobcontainer+"@"+blobname+".blob.core.windows.net"
 ```
 
 Configure the variables for deltapath and check point location
 
 ```
-val checkpointLocation = "wasbs://deltaidi@waginput.blob.core.windows.net/deltaidi/delta_custdata" + tableid + "/_checkpoints/etl-from-json"
-val deltapath = "wasbs://deltaidi@waginput.blob.core.windows.net/deltaidi/delta_custdata"
-val checkpointLocationforsqldw = "wasbs://deltaidi@waginput.blob.core.windows.net/deltaidi/delta_custdata" + tableid + "/_checkpoints/etl-from-json_sqldw1"
+val checkpointLocation = bloburl + "/deltaidi/delta_custdata" + tableid + "/_checkpoints/etl-from-json"
+//val deltapath = "wasbs://deltaidi@waginput.blob.core.windows.net/deltaidi/delta_custdata" + tableid
+val deltapath = bloburl + "/deltaidi/delta_custdata"
+val checkpointLocationforsqldw = bloburl + "/deltaidi/delta_custdata" + tableid + "/_checkpoints/etl-from-json_sqldw1"
 ```
 
 Create the jdbc string to be used for Azure Synapse Analytics
 
 ```
-val jdbcconn = "jdbc:sqlserver://idicdmsvr.database.windows.net:1433;database=idicdm;user=xxxxx@idicdmsvr;password=xxxxxxx;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"
+val jdbcconn = "jdbc:sqlserver://" + sqldwname1 + ":1433;database=" + sqldwdatabase1 + ";user=" + sqldwuser1 + "@" + sqldwsvrname1 + ";password=" + sqldwpwd1 + ";encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"
 ```
 
 Clear the checkpoint to reprocess for testing only.
 
 ```
-dbutils.fs.rm("wasbs://xxxxx@xxxxxx.blob.core.windows.net/deltaidi/delta_custdata"+ tableid +"/_checkpoints/etl-from-json_sqldw1", true)
+dbutils.fs.rm(bloburl + "/deltaidi/delta_custdata"+ tableid +"/_checkpoints/etl-from-json_sqldw1", true)
 ```
 
 Now time to read the delta log stream.
@@ -503,6 +523,45 @@ BEGIN
 END
 GO
 
+```
+TO delete the tables:
+
+```
+/****** Object:  StoredProcedure [dbo].[usp_createtable]    Script Date: 3/4/2020 9:23:17 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROC [dbo].[usp_createtable] @start [int],@end [int] AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON
+
+    -- Insert statements for procedure here
+    --SELECT <@Param1, sysname, @p1>, <@Param2, sysname, @p2>
+
+	Declare @endcount int
+
+	Set @endcount = @start + @end;
+
+	WHILE   @start < @endcount
+	BEGIN
+		DECLARE @tablename varchar(400)
+		
+		Set @tablename = 'custdata' + cast(@start AS VARCHAR(10))
+		print @tablename
+
+		
+
+		DECLARE @sql_code NVARCHAR(4000) = 'IF OBJECT_ID(N'''+@tablename+''', N''U'') IS NOT NULL Drop table ' + @tablename + ' ; CREATE TABLE ' + @tablename + ' (	[eventdatetime] [varchar](400) NULL,	[customername] [varchar](300) NULL,	[address] [varchar](500) NULL,	[city] [varchar](100) NULL,	[state] [varchar](50) NULL,	[zip] [varchar](50) NULL);';
+		--print @sql_code
+		EXEC    sp_executesql @sql_code;
+		
+		SET     @start +=1;
+	END
+
+END
 ```
 
 then create 100 tables try this is SSMS
@@ -676,6 +735,67 @@ try {
   // ensure to clean up the threadpool
   executionContext.shutdownNow()
 }
+```
+
+To clean up databricks streaming tables:
+
+```
+exec usp_cleanDatabrickStreamingtables;
+```
+Cleaning up databricks streaming temporary tables.
+
+```
+-- ======================================================================
+-- Create Stored Procedure Template for Azure SQL Data Warehouse Database
+-- ======================================================================
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER PROCEDURE usp_cleanDatabrickStreamingtables
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON
+
+drop table #tbl
+CREATE TABLE #tbl
+WITH
+( DISTRIBUTION = ROUND_ROBIN
+)
+AS
+SELECT  ROW_NUMBER() OVER(ORDER BY (SELECT NULL)) AS Sequence
+,       schema_name(t.schema_id) as schema_name,
+       t.name as table_name,
+       t.create_date,
+       t.modify_date
+from sys.tables t
+where t.name like 'databricks_streaming%'
+--order by schema_name, table_name;
+;
+--select * from #tbl
+
+DECLARE @nbr_statements INT = (SELECT COUNT(*) FROM #tbl)
+,       @i INT = 1
+;
+
+WHILE   @i <= @nbr_statements
+BEGIN
+	DECLARE @tablename varchar(400)
+
+	--Set @tablename = cast(@i AS VARCHAR(10))
+	Set @tablename = (SELECT table_name FROM #tbl WHERE Sequence = @i)
+	print @tablename
+
+    DECLARE @sql_code NVARCHAR(4000) = 'IF OBJECT_ID(N'''+ @tablename +''', N''U'') IS NOT NULL Drop table ' + @tablename + ' ; ';
+    EXEC    sp_executesql @sql_code;
+    SET     @i +=1;
+END
+
+END
+GO
 ```
 
 Thank you!.

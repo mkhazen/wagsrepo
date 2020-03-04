@@ -74,6 +74,8 @@ select count(*) from custdata19;
 
 exec usp_createtable 20,100
 
+exec usp_droptables 20,100
+
 
 select count(*) from custdata20;
 
@@ -102,3 +104,42 @@ select count(*) from custdata28;
 select count(*) from custdata29;
 
 Drop table dbo.databricks_*;
+
+
+select count(*) from custdata10;
+
+select schema_name(t.schema_id) as schema_name,
+       t.name as table_name,
+       t.create_date,
+       t.modify_date
+from sys.tables t
+order by schema_name,
+         table_name;
+
+select schema_name(t.schema_id) as schema_name,
+       t.name as table_name,
+       t.create_date,
+       t.modify_date
+from sys.tables t
+where t.name like 'databricks_streaming%'
+order by schema_name,
+         table_name;
+
+drop table #tbl
+CREATE TABLE #tbl
+WITH
+( DISTRIBUTION = ROUND_ROBIN
+)
+AS
+SELECT  ROW_NUMBER() OVER(ORDER BY (SELECT NULL)) AS Sequence
+,       schema_name(t.schema_id) as schema_name,
+       t.name as table_name,
+       t.create_date,
+       t.modify_date
+from sys.tables t
+where t.name like 'databricks_streaming%'
+--order by schema_name, table_name;
+;
+select * from #tbl
+
+exec usp_cleanDatabrickStreamingtables;
