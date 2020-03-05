@@ -275,6 +275,13 @@ now to move those changes to cosmos db using structured streaming
 
 Note: i am using customername as the key to join all the tables.
 
+to update unique values as upsert 
+1) Create a parition key in my case was customername
+2) create a unique key as productname in my case here
+
+Combination of customername and productname becomes the unique to update the row.
+Update in cosmos is replacing the whole row.
+
 ```
 val ConfigMap = Map(
 "Endpoint" -> scmcosmosuri,
@@ -289,7 +296,8 @@ messages
   .join(dfsupplier, "customername")
   .join(dflocation, "customername")
   .join(dfteam, "customername")
-  .select("eventdatetime","customername","address","city","state","zip","productname","suppliername","locationname","teamname")
+  .withColumn("id", col("productname"))
+  .select("id","eventdatetime","customername","address","city","state","zip","productname","suppliername","locationname","teamname")
   .writeStream
   .format(classOf[CosmosDBSinkProvider].getName)
   .outputMode("update")
