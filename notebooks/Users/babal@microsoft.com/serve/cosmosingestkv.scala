@@ -89,11 +89,13 @@ val messages = spark.readStream.format("delta").option("ignoreDeletes", "true").
 
 // COMMAND ----------
 
+//default container name from key vault is custdata2
 val ConfigMap = Map(
 "Endpoint" -> scmcosmosuri,
 "Masterkey" -> scmcosmoskey,
 "Database" -> scmcosmosdb,
 "Collection" -> scmcosmoscontainer,
+//"Collection" -> "custdata3",
 "Upsert" -> "true"
 )
 //messages.select("eventdatetime","customername","address","city","zip").withColumn("Date", (col("eventdatetime").cast("date"))) 
@@ -105,7 +107,7 @@ messages
   .select("eventdatetime","customername","address","city","state","zip","productname","suppliername","locationname","teamname")
   .writeStream
   .format(classOf[CosmosDBSinkProvider].getName)
-  .outputMode("update")
+  //.outputMode("update")
   .options(ConfigMap)
   .option("checkpointLocation", checkpointLocationforcosmo1)
   .start()
