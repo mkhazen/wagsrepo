@@ -123,3 +123,8 @@ messages.writeStream
   .option("dbTable", tablename)
   .option("checkpointLocation", checkpointLocationforsqldw)
   .start()
+
+// COMMAND ----------
+
+//follow this tutorial
+//https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/azure-databricks/databricks-extract-load-sql-data-warehouse.md
