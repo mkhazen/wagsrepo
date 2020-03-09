@@ -143,3 +143,14 @@ where t.name like 'databricks_streaming%'
 select * from #tbl
 
 exec usp_cleanDatabrickStreamingtables;
+
+select * From dbo.custdata10 where customername = 'idicustomer 7';
+
+update dbo.custdata10 set state = 'IL1' where customername = 'idicustomer 7';
+
+update dbo.custdata10 set state = 'IL' where customername = 'idicustomer 7';
+
+update dbo.custdata10 set state = 'IL1' From dbo.custdata10 Join product on custdata10.customername = product.customername
+where custdata10.customername = 'idicustomer 7';
+
+
