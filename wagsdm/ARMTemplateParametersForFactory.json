@@ -5,9 +5,6 @@
 		"factoryName": {
 			"value": "wagsdm"
 		},
-		"integrationRuntime_mltest1": {
-			"value": "mltest1"
-		},
 		"AzureBlobStorage1_connectionString": {
 			"value": ""
 		},

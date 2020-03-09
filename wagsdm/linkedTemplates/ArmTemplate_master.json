@@ -7,11 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "wagsdm"
 		},
-		"integrationRuntime_mltest1": {
-			"type": "string",
-			"metadata": "Integration runtime name",
-			"defaultValue": "mltest1"
-		},
 		"AzureBlobStorage1_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
@@ -90,9 +85,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"integrationRuntime_mltest1": {
-						"value": "[parameters('integrationRuntime_mltest1')]"
 					},
 					"AzureBlobStorage1_connectionString": {
 						"value": "[parameters('AzureBlobStorage1_connectionString')]"

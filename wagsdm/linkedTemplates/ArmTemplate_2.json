@@ -13,6 +13,597 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/ToHyperscale')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "toHyperscale",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ParquetSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "vendorID",
+											"type": "String"
+										},
+										"sink": {
+											"name": "vendorID",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "tpepPickupDateTime",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "tpepPickupDateTime",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "tpepDropoffDateTime",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "tpepDropoffDateTime",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "passengerCount",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "passengerCount",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "tripDistance",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "tripDistance",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "puLocationId",
+											"type": "String"
+										},
+										"sink": {
+											"name": "puLocationId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "doLocationId",
+											"type": "String"
+										},
+										"sink": {
+											"name": "doLocationId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "startLon",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "startLon",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "startLat",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "startLat",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "endLon",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "endLon",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "endLat",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "endLat",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "rateCodeId",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "rateCodeId",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "storeAndFwdFlag",
+											"type": "String"
+										},
+										"sink": {
+											"name": "storeAndFwdFlag",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "paymentType",
+											"type": "String"
+										},
+										"sink": {
+											"name": "paymentType",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "fareAmount",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "fareAmount",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "extra",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "extra",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "mtaTax",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "mtaTax",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "improvementSurcharge",
+											"type": "String"
+										},
+										"sink": {
+											"name": "improvementSurcharge",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "tipAmount",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "tipAmount",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "tollsAmount",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "tollsAmount",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "totalAmount",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "totalAmount",
+											"type": "Double"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "prateekfiles",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "hyperscaleisi",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/filecheck')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ZipMetadata",
+						"type": "GetMetadata",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "filecheck",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true
+							},
+							"formatSettings": {
+								"type": "DelimitedTextReadSettings"
+							}
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "ZipMetadata",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('ZipMetadata').output.childItems",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Set variable3",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "dummyvar",
+										"value": {
+											"value": "@item().name",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Append variable1",
+									"type": "AppendVariable",
+									"dependsOn": [
+										{
+											"activity": "Set variable3",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "filelist",
+										"value": {
+											"value": "@variables('dummyvar')",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "Set variable4",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "ForEach1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "filelistcount",
+							"value": {
+								"value": "@string(length(variables('filelist')))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "If Condition1",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Set variable4",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@equals(variables('filelistcount'),'2')",
+								"type": "Expression"
+							},
+							"ifTrueActivities": [
+								{
+									"name": "startjobtotmp",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "DelimitedTextSource",
+											"storeSettings": {
+												"type": "AzureBlobStorageReadSettings",
+												"recursive": true,
+												"wildcardFileName": "*"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextReadSettings"
+											}
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".csv"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "filecheck",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DelimitedText3",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"filecnt": {
+						"type": "int",
+						"defaultValue": 0
+					}
+				},
+				"variables": {
+					"dummyvar": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"filelist": {
+						"type": "Array"
+					},
+					"filelistcount": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/purchasing')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Purchasing",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".csv"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "purchasingraw",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "purchasingfinal",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "FileServer1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "FileServerLocation",
+						"fileName": "test.csv",
+						"folderPath": "wags"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "key",
+						"type": "String"
+					},
+					{
+						"name": "pickup_datetime",
+						"type": "String"
+					},
+					{
+						"name": "pickup_longitude",
+						"type": "String"
+					},
+					{
+						"name": "pickup_latitude",
+						"type": "String"
+					},
+					{
+						"name": "dropoff_longitude",
+						"type": "String"
+					},
+					{
+						"name": "dropoff_latitude",
+						"type": "String"
+					},
+					{
+						"name": "passenger_count",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/cpblobtohyperscale')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -169,6 +760,265 @@
 					],
 					"script": "source(output(\n\t\tvendorID as string,\n\t\ttpepPickupDateTime as timestamp,\n\t\ttpepDropoffDateTime as timestamp,\n\t\tpassengerCount as integer,\n\t\ttripDistance as double,\n\t\tpuLocationId as string,\n\t\tdoLocationId as string,\n\t\tstartLon as double,\n\t\tstartLat as double,\n\t\tendLon as double,\n\t\tendLat as double,\n\t\trateCodeId as integer,\n\t\tstoreAndFwdFlag as string,\n\t\tpaymentType as string,\n\t\tfareAmount as double,\n\t\textra as double,\n\t\tmtaTax as double,\n\t\timprovementSurcharge as string,\n\t\ttipAmount as double,\n\t\ttollsAmount as double,\n\t\ttotalAmount as double,\n\t\tpuYear as string,\n\t\tpuMonth as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet') ~> taxidata\nsource(output(\n\t\tvendorID as integer,\n\t\tlpepPickupDatetime as timestamp,\n\t\tlpepDropoffDatetime as timestamp,\n\t\tpassengerCount as integer,\n\t\ttripDistance as double,\n\t\tpuLocationId as string,\n\t\tdoLocationId as string,\n\t\tpickupLongitude as double,\n\t\tpickupLatitude as double,\n\t\tdropoffLongitude as double,\n\t\tdropoffLatitude as double,\n\t\trateCodeID as integer,\n\t\tstoreAndFwdFlag as string,\n\t\tpaymentType as integer,\n\t\tfareAmount as double,\n\t\textra as double,\n\t\tmtaTax as double,\n\t\timprovementSurcharge as string,\n\t\ttipAmount as double,\n\t\ttollsAmount as double,\n\t\tehailFee as double,\n\t\ttotalAmount as double,\n\t\ttripType as integer,\n\t\tpuYear as string,\n\t\tpuMonth as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet') ~> taxigreen\ntaxidata select(mapColumn(\n\t\tvendorID,\n\t\ttpepPickupDateTime,\n\t\ttpepDropoffDateTime,\n\t\tpassengerCount,\n\t\ttripDistance,\n\t\tpuLocationId,\n\t\tdoLocationId,\n\t\tstartLon,\n\t\tstartLat,\n\t\tendLon,\n\t\tendLat,\n\t\trateCodeId,\n\t\tstoreAndFwdFlag,\n\t\tpaymentType,\n\t\tfareAmount,\n\t\textra,\n\t\tmtaTax,\n\t\timprovementSurcharge,\n\t\ttipAmount,\n\t\ttollsAmount,\n\t\ttotalAmount,\n\t\tpuYear,\n\t\tpuMonth\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\ntaxigreen select(mapColumn(\n\t\tvendorID,\n\t\tlpepPickupDatetime,\n\t\tlpepDropoffDatetime,\n\t\tpassengerCount,\n\t\ttripDistance,\n\t\tpuLocationId,\n\t\tdoLocationId,\n\t\tpickupLongitude,\n\t\tpickupLatitude,\n\t\tdropoffLongitude,\n\t\tdropoffLatitude,\n\t\trateCodeID,\n\t\tstoreAndFwdFlag,\n\t\tpaymentType,\n\t\tfareAmount,\n\t\textra,\n\t\tmtaTax,\n\t\timprovementSurcharge,\n\t\ttipAmount,\n\t\ttollsAmount,\n\t\tehailFee,\n\t\ttotalAmount,\n\t\ttripType,\n\t\tpuYear,\n\t\tpuMonth\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select2\nSelect1 sink(input(\n\t\tvendorID as string,\n\t\ttpepPickupDateTime as timestamp,\n\t\ttpepDropoffDateTime as timestamp,\n\t\tpassengerCount as integer,\n\t\ttripDistance as double,\n\t\tpuLocationId as string,\n\t\tdoLocationId as string,\n\t\tstartLon as double,\n\t\tstartLat as double,\n\t\tendLon as double,\n\t\tendLat as double,\n\t\trateCodeId as integer,\n\t\tstoreAndFwdFlag as string,\n\t\tpaymentType as string,\n\t\tfareAmount as double,\n\t\textra as double,\n\t\tmtaTax as double,\n\t\timprovementSurcharge as string,\n\t\ttipAmount as double,\n\t\ttollsAmount as double,\n\t\ttotalAmount as double\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: true,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> idicdm\nSelect2 sink(input(\n\t\tvendorID as integer,\n\t\tlpepPickupDatetime as timestamp,\n\t\tlpepDropoffDatetime as timestamp,\n\t\tpassengerCount as integer,\n\t\ttripDistance as double,\n\t\tpuLocationId as string,\n\t\tdoLocationId as string,\n\t\tpickupLongitude as double,\n\t\tpickupLatitude as double,\n\t\tdropoffLongitude as double,\n\t\tdropoffLatitude as double,\n\t\trateCodeID as integer,\n\t\tstoreAndFwdFlag as string,\n\t\tpaymentType as integer,\n\t\tfareAmount as double,\n\t\textra as double,\n\t\tmtaTax as double,\n\t\timprovementSurcharge as string,\n\t\ttipAmount as double,\n\t\ttollsAmount as double,\n\t\tehailFee as double,\n\t\ttotalAmount as double,\n\t\ttripType as integer,\n\t\tpuYear as integer,\n\t\tpuMonth as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: true,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> idicdmgreen"
 				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/cplaketosqldwdim')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "product",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "SqlDWSink",
+								"allowPolyBase": true,
+								"polyBaseSettings": {
+									"rejectValue": 0,
+									"rejectType": "value",
+									"useTypeDefault": true
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "eventdatetime",
+											"type": "String"
+										},
+										"sink": {
+											"name": "eventdatetime",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "customername",
+											"type": "String"
+										},
+										"sink": {
+											"name": "customername",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "address",
+											"type": "String"
+										},
+										"sink": {
+											"name": "address",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "city",
+											"type": "String"
+										},
+										"sink": {
+											"name": "city",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "state",
+											"type": "String"
+										},
+										"sink": {
+											"name": "state",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "zip",
+											"type": "String"
+										},
+										"sink": {
+											"name": "zip",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "productname",
+											"type": "String"
+										},
+										"sink": {
+											"name": "productname",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "producttxt",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "sqldwproduct",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "supplier",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "SqlDWSink",
+								"allowPolyBase": true,
+								"polyBaseSettings": {
+									"rejectValue": 0,
+									"rejectType": "value",
+									"useTypeDefault": true
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "eventdatetime",
+											"type": "String"
+										},
+										"sink": {
+											"name": "eventdatetime",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "customername",
+											"type": "String"
+										},
+										"sink": {
+											"name": "customername",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "address",
+											"type": "String"
+										},
+										"sink": {
+											"name": "address",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "city",
+											"type": "String"
+										},
+										"sink": {
+											"name": "city",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "state",
+											"type": "String"
+										},
+										"sink": {
+											"name": "state",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "zip",
+											"type": "String"
+										},
+										"sink": {
+											"name": "zip",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "suppliername",
+											"type": "String"
+										},
+										"sink": {
+											"name": "suppliername",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "suppliertxt",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "suppliersqldw",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
 			},
 			"dependsOn": []
 		},
@@ -408,7 +1258,9 @@
 				],
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DelimitedText1')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DFExecute')]",
@@ -628,7 +1480,10 @@
 				],
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/filecheck')]",
+				"[concat(variables('factoryId'), '/pipelines/purchasing')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/mainpipeline-seq')]",
@@ -716,7 +1571,10 @@
 				],
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/filecheck')]",
+				"[concat(variables('factoryId'), '/pipelines/purchasing')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/taxiblobsqldw')]",
