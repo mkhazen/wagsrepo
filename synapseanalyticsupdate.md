@@ -126,7 +126,8 @@ Now time to write the code to update a table in Azure Synapse Analytics
     var connection:Connection = null
     var statement:Statement = null
     var sql = "select top(1) * from dbo.custdata10;"
-    var updatesql = "update dbo.custdata10 Set state = 'IL1' where customername = 'idicustomer 6';"
+    //var updatesql = "update dbo.custdata10 Set state = 'IL1' where customername = 'idicustomer 6';"
+     var updatesql = "update dbo.custdata10 set state = 'IL1' From dbo.custdata10 Join product on custdata10.customername = product.customername where custdata10.customername = 'idicustomer 7';"
     try {      
       connection = DriverManager.getConnection(sqlDwUrlSmall)      
       statement = connection.createStatement()
