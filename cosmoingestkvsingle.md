@@ -187,7 +187,7 @@ https://github.com/balakreshnan/wagsrepo/blob/master/deltadataload.md
 
 Note: important steps update the cosmos db driver to latest version. i am using this url 
 https://repo1.maven.org/maven2/com/microsoft/azure/azure-cosmosdb-spark_2.4.0_2.11/
-and download 2.0.3 and install in the cluster first before you begin the below section.
+and download 2.0.3 uber jar and install in the cluster first before you begin the below section.
 
 
 Lets add all the includes
