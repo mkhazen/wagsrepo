@@ -153,4 +153,39 @@ update dbo.custdata10 set state = 'IL' where customername = 'idicustomer 7';
 update dbo.custdata10 set state = 'IL1' From dbo.custdata10 Join product on custdata10.customername = product.customername
 where custdata10.customername = 'idicustomer 7';
 
+/****** Object:  Table [dbo].[custdata1]    Script Date: 3/11/2020 1:58:54 PM ******/
+DROP TABLE [dbo].[custdatastream]
+GO
+
+/****** Object:  Table [dbo].[custdata1]    Script Date: 3/11/2020 1:58:54 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[custdatastream]
+(
+	[eventdatetime] [varchar](400) NULL,
+	[customername] [varchar](300) NULL,
+	[address] [varchar](500) NULL,
+	[city] [varchar](100) NULL,
+	[state] [varchar](50) NULL,
+	[zip] [varchar](50) NULL,
+	[inserttime] datetime NULL,
+	[satime] datetime NULL
+)
+WITH
+(
+	DISTRIBUTION = ROUND_ROBIN,
+	CLUSTERED COLUMNSTORE INDEX
+)
+GO
+
+
+select * from dbo.custdatastream
+
+truncate table dbo.custdatastream;
+
+
 
