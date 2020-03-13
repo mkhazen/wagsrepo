@@ -89,38 +89,43 @@ val messages = spark.readStream.format("delta").option("ignoreDeletes", "true").
 
 // COMMAND ----------
 
-//default container name from key vault is custdata2
-// update will replace the whole row
-// combination can be built based on Parition key and Primary Key (unique key columns)
-val ConfigMap = Map(
-"Endpoint" -> scmcosmosuri,
-"Masterkey" -> scmcosmoskey,
-"Database" -> scmcosmosdb,
-//"Collection" -> scmcosmoscontainer,
-"Collection" -> "custdata3",
-"Upsert" -> "true"
-)
-//messages.select("eventdatetime","customername","address","city","zip").withColumn("Date", (col("eventdatetime").cast("date"))) 
-messages
-  .join(dfproduct, "customername")
-  .join(dfsupplier, "customername")
-  .join(dflocation, "customername")
-  .join(dfteam, "customername")
-  .withColumn("id", col("productname"))
-  .select("id","eventdatetime","customername","address","city","state","zip","productname","suppliername","locationname","teamname")
-  .writeStream
-  .format(classOf[CosmosDBSinkProvider].getName)
-  .outputMode("update")
-  .options(ConfigMap)
-  .option("checkpointLocation", checkpointLocationforcosmo1)
-  //.trigger(Trigger.ProcessingTime(1000 * 3)) // every 3 seconds 
-  .start()
-
-// COMMAND ----------
-
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types._
 import org.apache.spark.sql._
+
+// COMMAND ----------
+
+val writeConfig = Config(Map(
+  "Endpoint" -> scmcosmosuri,
+  "Masterkey" -> scmcosmoskey,
+  "Database" -> scmcosmosdb,
+  //"Collection" -> scmcosmoscontainer,
+  "Collection" -> "custdata3",
+  "Upsert" -> "true"
+))
+
+messages
+        .join(dfproduct, "customername")
+        .join(dfsupplier, "customername")
+        .join(dflocation, "customername")
+        .join(dfteam, "customername")
+        .withColumn("id", col("productname"))
+        .select("id","eventdatetime","customername","address","city","state","zip","productname","suppliername","locationname","teamname")
+        .writeStream
+        //.option("checkpointLocation", checkpointLocationforcosmo1)
+        .foreachBatch((messages: DataFrame, batchId: Long) => {
+           //val startTimestamp = currentTimestamp();
+           //logStart(startTimestamp); // <- Function to track batch start 
+           print("Batch id" + batchId)
+           messages.write.mode(SaveMode.Overwrite).cosmosDB(writeConfig)
+ 
+           val count = messages.count();
+           //logEnd(startTimestamp, count); // <- Function to track batch end
+          //display(count)
+          print(count)
+        })
+        .start();
+
 
 // COMMAND ----------
 
@@ -141,18 +146,18 @@ messages
         .withColumn("id", col("productname"))
         .select("id","eventdatetime","customername","address","city","state","zip","productname","suppliername","locationname","teamname")
         .writeStream
-        .option("checkpointLocation", checkpointLocationforcosmo1)
+        //.option("checkpointLocation", checkpointLocationforcosmo1)
         .foreachBatch((messages: DataFrame, batchId: Long) => {
            //val startTimestamp = currentTimestamp();
            //logStart(startTimestamp); // <- Function to track batch start 
-                      
+           print('Batch id' + batchId)
            messages.write
                   .format(classOf[CosmosDBSinkProvider].getName) // <- Using CosmosDBSinkProvider gives an error (*)
                   .options(ConfigMap)
-                  .mode(SaveMode.Append) // <- outputMode is not defined in DataFrameWriter
+                  .mode(SaveMode.Overwrite) // <- outputMode is not defined in DataFrameWriter
                   .partitionBy("locationPartition")
                   .save();
- 
+     
            val count = messages.count();
            //logEnd(startTimestamp, count); // <- Function to track batch end
         })
