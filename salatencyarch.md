@@ -55,7 +55,7 @@ First create a Event hub namespace and event hub. Leave the default settings for
 
 Now Create a Azure stream analytics with default settings as well with 3 units and base version.
 
-COnfigure the input as Event hub
+Cofigure the input as Event hub
 
 Configure the output as Azyre Syanpse Analytics
 
@@ -92,8 +92,8 @@ The results should like below:
 
 Check the time differences between eventdatetime, EventLanded, SAProcessed
 
-Eventdatetime - is when the Event was created by the data loader
-EventLanded - is the time when Event reached Event hub.
-SAProcessed - is the time when SA processed the record and saved
+Eventdatetime - is when the Event was created by the data loader <br />
+EventLanded - is the time when Event reached Event hub. <br />
+SAProcessed - is the time when SA processed the record and saved <br />
 
 Almost less that a second Stream Analytics is reading and processing.
