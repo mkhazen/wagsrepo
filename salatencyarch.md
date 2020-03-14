@@ -6,6 +6,8 @@
 
 ## setup Azure synpase analytics
 
+Azure synapse analytics was created with dw200c.
+
 Create table called custdatastream in dbo schema
 
 ```
@@ -51,13 +53,20 @@ select eventdatetime, EventEnqueuedUtcTime as EventLanded, EventProcessedUtcTime
 
 Goal here is to load event into Event hub and then use Azure Stream analytics to load those data into Azure synapse analytics in a streaming mode.
 
-First create a Event hub namespace and event hub. Leave the default settings for parition. usually it is 4
+## Event hub Configuration
 
-Now Create a Azure stream analytics with default settings as well with 3 units and base version.
+First create a Event hub namespace and event hub. Leave the default settings for parition as 1. usually it is 1. Message retention is 1 day and 1 consumer group.
+
+I used Standard 1 unit for Pricing Tier.
+
+
+## Azure Stream Analaytics configuration
+
+Now Create a Azure stream analytics with default settings as well with 3 Streaming units and base version.
 
 Cofigure the input as Event hub
 
-Configure the output as Azyre Syanpse Analytics
+Configure the output as Azure Syanpse Analytics
 
 Now time to write the query for Azure Stream Analytics
 
