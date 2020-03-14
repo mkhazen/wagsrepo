@@ -173,7 +173,10 @@ CREATE TABLE [dbo].[custdatastream]
 	[state] [varchar](50) NULL,
 	[zip] [varchar](50) NULL,
 	[inserttime] datetime NULL,
-	[satime] datetime NULL
+	[satime] datetime NULL,
+	EventProcessedUtcTime datetime null,
+    EventEnqueuedUtcTime datetime null,
+    PartitionId int null
 )
 WITH
 (
@@ -186,6 +189,8 @@ GO
 select * from dbo.custdatastream
 
 truncate table dbo.custdatastream;
+
+select eventdatetime, EventEnqueuedUtcTime as EventLanded, EventProcessedUtcTime as SAProcessed, satime from dbo.custdatastream;
 
 
 
